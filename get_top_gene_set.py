@@ -25,21 +25,26 @@ TYPE_IDX = 5
 
 
 # Data Loading functions
+def load_data_from_args(args):
+    '''
+    load data from argparse object
+    '''
+    return load_data(args.data_mat,args.sample2cond,args.samples,args.conditions)
 
-def load_data(args):
+def load_data(data_mat_file, sample2cond_file, sample_file, condition_file):
     '''
     Wrapper function to load data from files into relavent objects
     '''
     # load TPM data
-    df = pd.read_csv(args.data_mat,sep='\t').fillna('')
+    df = pd.read_csv(data_mat_file,sep='\t').fillna('')
 
     # load mapping from sample to condition
-    with open(args.sample2cond,'r') as f:
+    with open(sample2cond_file,'r') as f:
         sample2condition = dict(x.strip().split() for x in f.readlines())
 
     # load sample to include file
-    if args.samples:
-        with open(args.samples,'r') as f:
+    if sample_file:
+        with open(sample_file,'r') as f:
             samples = list(x.strip() for x in f.readlines())
     # if none provided, just use all the samples from the sample2condition dict
     else: 
@@ -48,8 +53,8 @@ def load_data(args):
 
         
     # load the conditions to include file
-    if args.conditions:
-        with open(args.conditions,'r') as f:
+    if condition_file:
+        with open(condition_file,'r') as f:
             conditions = list(x.strip() for x in f.readlines())
     # if none provided, just use all the conditions
     else:
@@ -271,7 +276,7 @@ def main():
     # +-----------+
     # load expression data from files into objects
     print("Loading data...\n")
-    df,sample2cond,samples,conds = load_data(args)
+    df,sample2cond,samples,conds = load_data_from_args(args)
     n = args.top_n
 
     # Load features from genbank
