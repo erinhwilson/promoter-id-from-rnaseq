@@ -4,9 +4,11 @@
 # the average, then saves a list loci that are in the top
 # N% across all conditions listed. 
 
-# The user must provide the data matrix, a value for N, and 
-# an operon min distance. Optionally, the user can provide
-# a list of specific samples to include and a list of 
+# The user must provide the data matrix, a genbank file, a value 
+# for N, and an operon min distance. Other required arguments to make
+# logistics smooth are an output directory and a file mapping each 
+# sample name to its assigned condition. Optionally, the user can 
+# provide a list of specific samples to include and a list of 
 # experimental conditions. If none are provided, the program 
 # will use all available. 
 
@@ -15,33 +17,28 @@ from Bio import SeqIO
 import os
 import pandas as pd
 
-# feature tuple indices
-LEFT_IDX = 0
-RIGHT_IDX = 1
-STRAND_IDX = 2
-LOCUS_IDX = 3
-GENE_IDX = 4
-TYPE_IDX = 5
 
+# +------------------------+
+# | Data Loading functions |
+# +------------------------+
 
-# Data Loading functions
-def load_data_from_args(args):
-    '''
-    load data from argparse object
-    '''
-    return load_data(args.data_mat,args.sample2cond,args.samples,args.conditions)
-
-def load_data(data_mat_file, sample2cond_file, sample_file, condition_file):
+def load_data(
+        data_mat_file, 
+        sample2cond_file, 
+        sample_file, 
+        condition_file):
     '''
     Wrapper function to load data from files into relavent objects
     '''
     # load TPM data
     df = pd.read_csv(data_mat_file,sep='\t').fillna('')
 
+    
     # load mapping from sample to condition
     with open(sample2cond_file,'r') as f:
         sample2condition = dict(x.strip().split() for x in f.readlines())
 
+    
     # load sample to include file
     if sample_file:
         with open(sample_file,'r') as f:
@@ -49,7 +46,6 @@ def load_data(data_mat_file, sample2cond_file, sample_file, condition_file):
     # if none provided, just use all the samples from the sample2condition dict
     else: 
         samples = list(sample2condition.keys())
-
 
         
     # load the conditions to include file
@@ -63,7 +59,23 @@ def load_data(data_mat_file, sample2cond_file, sample_file, condition_file):
 
     return df, sample2condition, samples, conditions
 
-def get_features_from_genbank(gb_file):
+
+def load_data_from_args(args):
+    '''
+    load data from argparse object
+    '''
+    return load_data(args.data_mat,args.sample2cond,args.samples,args.conditions)
+
+
+# feature tuple indices
+LEFT_IDX = 0
+RIGHT_IDX = 1
+STRAND_IDX = 2
+LOCUS_IDX = 3
+GENE_IDX = 4
+TYPE_IDX = 5
+
+def get_feature_tuples_from_genbank(gb_file):
     '''
     Given a genbank file, parse out all of it's features into a 5-tuple 
     of (start_coord, end_coord,locus_tag,gene_symbol,type).
@@ -95,7 +107,7 @@ def get_pos_neg_features(gb_file):
     Given a genbank file, load its features then sort them into
     lists of positive strand feats and negative strand feats
     '''
-    feats = get_features_from_genbank(gb_file)
+    feats = get_feature_tuples_from_genbank(gb_file)
 
     feats_filt = [x for x in feats if x[TYPE_IDX] != 'gene']
         
@@ -111,9 +123,12 @@ def get_pos_neg_features(gb_file):
 
     return pos_feats, neg_feats
 
-# Data Transformations
 
-def transpose_data(df, samples, conditions, sample2condition):
+# +---------------------------------+
+# | Data Transformations & analysis |
+# +---------------------------------+
+
+def transpose_tpm_data(df, samples, conditions, sample2condition):
     '''
     Given a data matrix of rows as gene loci and columns as a mix of metadata and sample ids,
     tranpose the dataframe to by samples by genes. Use the samples and conditions provided 
@@ -143,7 +158,7 @@ def get_average_tpm_by_condition(df_orig,
     Finally for each gene, calculated the average and standard deviation
     '''
     # transpose data
-    df_T = transpose_data(df_orig, samples, conds, sample2cond)
+    df_T = transpose_tpm_data(df_orig, samples, conds, sample2cond)
     
     # start with a fresh copy of the dataframe
     df = df_T.copy()
@@ -152,6 +167,7 @@ def get_average_tpm_by_condition(df_orig,
     if add_pseudocount:
         df[loci] = df[loci] + pseudocount 
     
+    # group samples by experimental condition and take the average
     df_means = df[['exp_condition']+loci]\
                     .groupby('exp_condition')\
                     .mean()\
@@ -161,7 +177,7 @@ def get_average_tpm_by_condition(df_orig,
 
 def flag_potential_operon_loci(pos_feats, neg_feats, min_dist):
     '''
-    Given a all features on the pos and neg strands, flag which ones 
+    Given all features on the pos and neg strands, flag which ones 
     may be in an operon at the given min_dist between loci on the same strand.
     
     Return a set of flagged loci.
@@ -174,32 +190,32 @@ def flag_potential_operon_loci(pos_feats, neg_feats, min_dist):
     # | NEGATIVE STRAND |
     # +-----------------+
     # if we're in the negative list, check the next feature to the right
-    for i,(left_coord,right_coord,strand,locus,gene,typee) in enumerate(neg_feats):
+    for i,cur_feat in enumerate(neg_feats):
         # if this isn't the last gene (aka no rightward operon),
         # check the min_distance window for other annotations
         if i < len(neg_feats) -1:
             # get the FOLLOWING feature (because on -1 strand)
-            upstream_loc = neg_feats[i+1]
+            upstream_feat = neg_feats[i+1]
 
             # if the left side of the upstream gene is within min_distance, 
             # collect it
-            if upstream_loc[LEFT_IDX] < (right_coord + min_dist):
+            if upstream_feat[LEFT_IDX] < (cur_feat[RIGHT_IDX] + min_dist):
                 operon_candidate_loci.append(neg_feats[i][LOCUS_IDX])
     
     # +-----------------+
     # | POSITIVE STRAND |
     # +-----------------+
     # if we're in the positive list, check the next feature to the left
-    for i,(left_coord,right_coord,strand,locus,gene,typee) in enumerate(pos_feats):
+    for i,cur_feat in enumerate(pos_feats):
         # if this isn't the first gene (aka no leftward operon),
         # check the min_distance window for other annotations
         if i !=0:
             # get the PREVIOUS feature (because on +1 strand)
-            upstream_loc = pos_feats[i-1]
+            upstream_feat = pos_feats[i-1]
 
             # if the right side of the upstream gene is within min_distance, 
             # collect it
-            if upstream_loc[RIGHT_IDX] > (left_coord - min_dist):
+            if upstream_feat[RIGHT_IDX] > (cur_feat[LEFT_IDX] - min_dist):
                 operon_candidate_loci.append(pos_feats[i][LOCUS_IDX])
     
     return set(operon_candidate_loci)
@@ -221,7 +237,7 @@ def get_top_n_perc_by_condition(df, loci, n):
         exp_cond = row.exp_condition
         # Sort all genes in the row by their tpm counts
         tpms = sorted(
-                list(zip(loci, row[loci].values)),  # zip locus and TPM
+                list(zip(loci, row[loci].values)), # zip locus and TPM
                 key=lambda x: x[1],                # sort by TPM
                 reverse=True                       # descending TPM order
         )
@@ -230,11 +246,18 @@ def get_top_n_perc_by_condition(df, loci, n):
         top_n_loci[exp_cond] = tpms[:int(0.01*n*num_loci)]
         
     # keep only the genes that were in all lists via set intersection
-    top_n_loci_only = [[y[0] for y in top_n_loci[x]] for x in top_n_loci] # drop tpm
-    top_n_sets = [set(x) for x in top_n_loci_only]                        # convert to sets
-    top_n_loci_all_conds = set.intersection(*top_n_sets)  # get intersection of all sets
+    # drop tpm val from tuple
+    top_n_loci_only = [[y[0] for y in top_n_loci[x]] for x in top_n_loci]
+    # convert lists to sets
+    top_n_sets = [set(x) for x in top_n_loci_only]
+    # get intersection of all sets                
+    top_n_loci_all_conds = set.intersection(*top_n_sets)
 
     return top_n_loci_all_conds#, top_n_loci, top_n_sets
+
+# +-------------------+
+# | Saving and output |
+# +-------------------+
 
 def write_loci_to_file(loci,loci_op_filt, outfile):
     '''
@@ -250,6 +273,9 @@ def write_loci_to_file(loci,loci_op_filt, outfile):
             op = True if loc in loci_op_filt else False
             f.write(f'{loc}\t{op}\n')
 
+# +-------------+
+# | MAIN SCRIPT |
+# +-------------+
 
 def main():
     # +------+
@@ -329,9 +355,6 @@ def main():
 
     print(f"Output written to {outf}")
     print("Done!")
-    
-
-
     
 
 if __name__ == '__main__':
