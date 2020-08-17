@@ -26,7 +26,8 @@ def load_data(
         data_mat_file, 
         sample2cond_file, 
         sample_file, 
-        condition_file):
+        condition_file,
+        gb_file):
     '''
     Wrapper function to load data from files into relavent objects
     '''
@@ -56,15 +57,20 @@ def load_data(
     else:
         conditions = list(set([sample2condition[x] for x in sample2condition]))
 
+    # Load features from genbank
+    pos_feats, neg_feats = get_pos_neg_features(gb_file)
 
-    return df, sample2condition, samples, conditions
+
+    return df, sample2condition, samples, conditions, pos_feats, neg_feats
+
+    # CODE REVIEW: argparse error handling for opening files
 
 
 def load_data_from_args(args):
     '''
     load data from argparse object
     '''
-    return load_data(args.data_mat,args.sample2cond,args.samples,args.conditions)
+    return load_data(args.data_mat,args.sample2cond,args.samples,args.conditions,args.gb_file)
 
 
 # feature tuple indices
@@ -302,19 +308,23 @@ def main():
     # +-----------+
     # load expression data from files into objects
     print("Loading data...\n")
-    df,sample2cond,samples,conds = load_data_from_args(args)
+    df,\
+    sample2cond,\
+    samples,\
+    conds,\
+    pos_feats,\
+    neg_feats = load_data_from_args(args)
     n = args.top_n
-
-    # Load features from genbank
-    pos_feats, neg_feats = get_pos_neg_features(args.gb_file)
-
+    min_dist - args.operon_min_dist
 
     # +-------------------+
     # | OPERON ESTIMATION |
     # +-------------------+
     # flag loci potentially in operons (set of locus ids)
     print("Estimating operons... \n")
-    maybe_operon_loci = flag_potential_operon_loci(pos_feats, neg_feats, args.operon_min_dist)
+    maybe_operon_loci = flag_potential_operon_loci(pos_feats, 
+                                                   neg_feats, 
+                                                   min_dist)
 
 
     # +-----------+
@@ -322,16 +332,14 @@ def main():
     # +-----------+
     print("Calculating mean TPMs for each condition...\n")
     # use this column to get a full list of all genes for which expression was measured
-    LOCI = list(df[args.locus_id_col].values)
+    locus_ids = list(df[args.locus_id_col].values)
 
     # group by condition and calculate TPM means
-    df_means = get_average_tpm_by_condition(
-        df,
-        samples,
-        conds,
-        sample2cond,
-        LOCI
-    )
+    df_means = get_average_tpm_by_condition(df,
+                                            samples,
+                                            conds,
+                                            sample2cond,
+                                            locus_ids)
 
     
     # +--------------------+
@@ -339,7 +347,7 @@ def main():
     # +--------------------+
     # get top locus ids in all conditions
     print("Getting top genes across conditions...\n")
-    top_locs = get_top_n_perc_by_condition(df_means, LOCI, n)
+    top_locs = get_top_n_perc_by_condition(df_means, locus_ids, n)
     
     # filter out loci maybe in operons
     top_locs_op_filter_out = [x for x in top_locs if x in maybe_operon_loci]
