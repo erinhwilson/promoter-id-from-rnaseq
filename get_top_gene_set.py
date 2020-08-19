@@ -13,9 +13,17 @@
 # will use all available. 
 
 import argparse
-from Bio import SeqIO
 import os
 import pandas as pd
+
+import genbank_utils as gu
+# genbank feature tuple indices
+LEFT_IDX = 0
+RIGHT_IDX = 1
+STRAND_IDX = 2
+LOCUS_IDX = 3
+GENE_IDX = 4
+TYPE_IDX = 5
 
 
 # +------------------------+
@@ -58,7 +66,7 @@ def load_data(
         conditions = list(set([sample2condition[x] for x in sample2condition]))
 
     # Load features from genbank
-    pos_feats, neg_feats = get_pos_neg_features(gb_file)
+    pos_feats, neg_feats = gu.get_pos_neg_features(gb_file)
 
 
     return df, sample2condition, samples, conditions, pos_feats, neg_feats
@@ -71,63 +79,6 @@ def load_data_from_args(args):
     load data from argparse object
     '''
     return load_data(args.data_mat,args.sample2cond,args.samples,args.conditions,args.gb_file)
-
-
-# feature tuple indices
-LEFT_IDX = 0
-RIGHT_IDX = 1
-STRAND_IDX = 2
-LOCUS_IDX = 3
-GENE_IDX = 4
-TYPE_IDX = 5
-
-def get_feature_tuples_from_genbank(gb_file):
-    '''
-    Given a genbank file, parse out all of it's features into a 5-tuple 
-    of (start_coord, end_coord,locus_tag,gene_symbol,type).
-    '''
-    # Use BioPython genbank parser
-    seq_record = SeqIO.parse(gb_file, "genbank").__next__()
-    
-    feat_list = []
-    # Loop over the genome file, get the CDS features on each of the strands
-    for feature in seq_record.features:
-        if 'locus_tag' in feature.qualifiers:
-            # get  locus tag 
-            lt = feature.qualifiers['locus_tag'][0]
-            # get the gene symbol if available, otherwise leave blank
-            g = "" if 'gene' not in feature.qualifiers else feature.qualifiers['gene'][0]
-            
-            feat_list.append((feature.location.start.position,
-                             feature.location.end.position,
-                             feature.strand,
-                             lt,
-                             g,
-                             feature.type))
-            
-    return feat_list
-
-
-def get_pos_neg_features(gb_file):
-    '''
-    Given a genbank file, load its features then sort them into
-    lists of positive strand feats and negative strand feats
-    '''
-    feats = get_feature_tuples_from_genbank(gb_file)
-
-    feats_filt = [x for x in feats if x[TYPE_IDX] != 'gene']
-        
-    # separate pos and neg lists and sort by gene start coordinate
-    pos_feats = [x for x in feats_filt if x[STRAND_IDX]== 1]
-    pos_feats.sort(key=lambda x: x[LEFT_IDX])
-    
-    neg_feats = [x for x in feats_filt if x[STRAND_IDX]==-1]
-    neg_feats.sort(key=lambda x: x[RIGHT_IDX])
-    
-    # make sure we still keep all features
-    assert(len(feats_filt) == len(pos_feats)+len(neg_feats))
-
-    return pos_feats, neg_feats
 
 
 # +---------------------------------+
