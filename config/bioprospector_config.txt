@@ -1,0 +1,8 @@
+biop_exe=/work/ewilson6/workspace/BioProspector.2004/BioProspector
+W=6
+w=6
+G=18
+g=15
+d=1
+n=200
+a=1
