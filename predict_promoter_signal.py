@@ -13,6 +13,8 @@ import os
 from subprocess import Popen, PIPE
 import time
 
+import bioprospector_utils as bu 
+
 
 def parse_bioprospector_config(filename):
     '''
@@ -27,10 +29,11 @@ def build_bioprospector_cmds(args):
     '''
     Build a list of commands to pass to subprocess to run bioprospector
     '''
+    print("Building BioProspector commands...")
+
     cmds_list = [] # store all n cmds
 
     biop_args = parse_bioprospector_config(args.biop_config)
-    print(biop_args)
 
     # make output directory for this bioprospector run
     base = os.path.basename(args.seq_file).split('.')[0]
@@ -77,7 +80,7 @@ def run_bioprospector(cmds_list):
     Given a list of command line args for bioprospector,
     execute the commands
     '''
-    print("Executing BioProspector")
+    print("Executing BioProspector...")
     for i,cmds in enumerate(cmds_list):
         print(f"Run {i+1} of {len(cmds_list)}")
 
@@ -104,26 +107,28 @@ def main():
     parser.add_argument('biop_config', help='path to BioProspector config file')
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
-    parser.add_argument('-n', '--num_runs', type=int, default=2,help='Number of times to run BioProspector (default 20)')
+    parser.add_argument('-n', '--num_runs', type=int, default=20,help='Number of times to run BioProspector (default 20)')
     
     args = parser.parse_args()
-    print(args.seq_file)
-    print(args.biop_config)
-    print(args.outdir)
-    print(args.num_runs)
 
+    # build list of command to execute
     cmds_list, biop_raw_dir = build_bioprospector_cmds(args)
-    
+
+    # run BioProspector via subprocess
     run_bioprospector(cmds_list)
 
-    # +------+
-    # | SAVE |
-    # +------+
-    # save to a fasta file
-    # out_path = write_fasta_file(args, loci, upstream_regions)    
+    # parse all the raw BioProspector output files, summarize 
+    # motifs found, and save output summary and selection files
+    selection_outf = f"{biop_raw_dir}_SELECTION.fa"
+    summary_outf = f"{biop_raw_dir}_SUMMARY.tsv"
 
-    # print(f"Output written to {out_path}")
-    # print("Done!")
+    bu.compile_and_select(
+        biop_raw_dir, 
+        args.seq_file, 
+        selection_outf,
+        summary_outf)
+
+    print("Done!")
     
 
 if __name__ == '__main__':
