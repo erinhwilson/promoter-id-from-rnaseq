@@ -1,5 +1,6 @@
 # bioprospector_utils.py
 
+import logomaker
 from os import listdir
 from os.path import isfile, join
 import pandas as pd
@@ -246,9 +247,137 @@ class Motif_2B:
         
         plt.show()
 
+    def get_color(row):
+        pal = sns.color_palette("hls", 4)
+        if row['value'] == 1.0 and row['instance']=='1':
+            return pal.as_hex()[0]
+        elif row['value'] == 2.0 and row['instance']=='1':
+            return pal.as_hex()[1]
+        elif row['value'] == 1.0 and row['instance']=='2':
+            return pal.as_hex()[2]
+        elif row['value'] == 2.0 and row['instance']=='2':
+            return pal.as_hex()[3]
+        elif row['value'] == -1.0:
+            return 'white'
+        else:
+            return 'black'    
+
+    def visualize_motif_locations(self):
+        '''
+        TODO: This shoudl probably be a method of a Motif object?
+        
+        Given a motif found by BioProspector, use Altir to visualize
+        the locations of this motif on the sequences that matched it.
+        
+        Returns a vertically concatted chart for all the sequence matches
+        store in this motif's m.seq_matches variable.
+        '''
+
+        rows = []
+        # for each promoter sequence that had a match to m
+        for sm in self.seq_matches:
+            row = []
+            #print("Promoter Match", sm.name)
+            row.append(sm.name)
+            row.append(sm.seq_len)
+            row.append(sm.site_num)
+            row.append(sm.block1pos)
+            row.append(sm.block2pos)
+            row.append(sm.block1seq)
+            row.append(sm.block2seq)
+
+            rows.append(row)
+
+        # convert seq match data into a dataframe for altair
+        biop_df = pd.DataFrame(rows,
+                               columns=['seq_name',
+                                        'seq_len',
+                                        'instance',
+                                        'b1pos',
+                                        'b2pos',
+                                        'b1seq',
+                                        'b2seq'])
+
+
+        # chart initialization
+        charts = []
+        ticks = [int(x) for x in list(np.arange(-100,0,10))]
+        
+        # group by seq name (be sure to capture multiple instances of a 
+        # matches of the motif to a sequence
+        biop_dfg =  biop_df.groupby('seq_name')
+        for name in biop_dfg.groups:
+            df = biop_dfg.get_group(name)
+
+            arrs = [] # array of mostly 0s except with the motif overlaps
+            instance_arrs = [] # array of which match instance this mask is for
+            b1seq_arrs = [] # copy of b1seq (same value in each slot, format for altair)
+            b2seq_arrs = [] # copy of b2seq (same value in each slot, format for altair)
+            pos_arrs = [] # position label for each slot in array (from -100:0)
+            
+            # for each row for this seq_name (may have multiple match instances)
+            for i, row in df.iterrows():
+                arr = np.zeros(row.seq_len)
+                b1_s = row['b1pos']
+                b1_e = row['b1pos'] + len(row['b1seq'])
+                b1_seq = row['b1seq']
+
+                b2_s = row['b2pos']
+                b2_e = row['b2pos'] + len(row['b2seq'])
+                b2_seq = row['b2seq']
+
+                # make a mask over the sequence where the match overlaps in the promoter seq
+                arr[b1_s:b1_e+1] = 1
+                arr[b2_s:b2_e+1] = 2
+
+                # provide padding if seq is shorter than 100
+                if len(arr)<100:
+                    # array of -1s
+                    padding = np.zeros(100-len(arr)) + -1 
+                    arr = np.concatenate((padding,arr))
+
+                # put all the data into lists (later will make a df for altair)
+                arrs.append(arr)
+                instance_arrs.append([row['instance'] for x in arr])
+                b1seq_arrs.append([b1_seq for x in arr])
+                b2seq_arrs.append([b2_seq for x in arr])
+                pos_arrs.append(np.arange(-100,0))
+                
+
+
+            # collect the array mask into a new df
+            mask_df = pd.DataFrame(np.concatenate(arrs).ravel(), columns=['value'])
+            mask_df['instance'] = np.concatenate(instance_arrs).ravel()
+            mask_df['b1_seq'] = np.concatenate(b1seq_arrs).ravel()
+            mask_df['b2_seq'] = np.concatenate(b2seq_arrs).ravel()
+            mask_df['pos'] = np.concatenate(pos_arrs).ravel()
+            mask_df['color'] = mask_df.apply(lambda row: get_color(row),axis=1)
+
+            # build altair heatmap for a particular sequence
+            chart = alt.Chart(
+                mask_df,
+                title=f"Motif loc in {name}"
+            ).mark_rect().encode(
+                x=alt.X('pos:O',axis=alt.Axis(values=ticks)),
+                y=alt.Y('instance:O'),
+                color=alt.Color('color:N',scale=None),
+                tooltip=["b1_seq:N",'b2_seq:N'],
+            ).properties(
+                width=700)
+            
+            # collect charts in a list
+            charts.append(chart)
+            
+        # vertically concat all charts for each motif
+        mega_chart = charts[0]
+        for c in charts[1:]:
+            mega_chart = alt.vconcat(mega_chart, c)
+
+        return mega_chart
+
     def view_motif_and_locs(self):
         self.view_motif()
-        display(visualize_motif_locations(self))
+        display(self.visualize_motif_locations())
         
     def extract_seq_match_blocks(self,seq_lookup):
         '''
@@ -499,5 +628,5 @@ def compile_and_select(biop_raw_dir,
     
     # select the top motif for each seq
     print("Selecting best motif for each sequence...")
-    select_motifs_with_most_agreement(df,selection_outf,summary_outf)
+    select_motifs_with_most_agreement(df,selection_outf,summary_outf,verbose=True)
 

@@ -10,6 +10,7 @@
 
 import argparse
 import os
+import pandas as pd
 from subprocess import Popen, PIPE
 import time
 
@@ -39,7 +40,7 @@ def build_bioprospector_cmds(args):
     base = os.path.basename(args.seq_file).split('.')[0]
     biop_str = f"W{biop_args['W']}_w{biop_args['w']}_G{biop_args['G']}_g{biop_args['g']}_d{biop_args['d']}_a{biop_args['a']}_n{biop_args['n']}"
     ts = time.strftime("%s",time.gmtime())
-    raw_dir = f"BIOP_RAW_{base}_{biop_str}_{ts}"
+    raw_dir = f"{base}_{biop_str}_BIOP_RAW_{ts}"
     raw_dir_path = os.path.join(args.outdir,raw_dir)
     
     mkdir_cmd = ['mkdir',raw_dir_path]
@@ -81,15 +82,78 @@ def run_bioprospector(cmds_list):
     execute the commands
     '''
     print("Executing BioProspector...")
-    for i,cmds in enumerate(cmds_list):
-        print(f"Run {i+1} of {len(cmds_list)}")
+    # get list of processes to execute each BioP command
+    proc_list = [Popen(cmd, stdout=PIPE, stderr=PIPE) for cmd in cmds_list]
+    # I think this for loop shoudl exectue the processes in parallel
+    for i,proc in enumerate(proc_list):
+        print(f"Run {i+1} of {len(proc_list)}")
 
         # execute bioprospector command and catch error
-        p = Popen(cmds, stdout=PIPE, stderr=PIPE)
-        output, error = p.communicate()
-        if p.returncode != 0: 
+        #p = Popen(cmds, stdout=PIPE, stderr=PIPE)
+        output, error = proc.communicate()
+        if proc.returncode != 0: 
             raise ValueError(f'BioProspector execution failed:{error.decode("utf-8")}')
-      
+
+
+def tag_max(df):
+    '''
+    Given a df of a BioProspector summary file, for each gene, determine the 
+    max block count. Return the df with the max blocks tagged
+    '''
+    sub_dfs = []
+    for seq_name,sub_df in df.groupby('seq_name'):
+        max_count = sub_df['block_count'].max()
+        sub_df['is_max'] = sub_df.apply(
+            lambda row: True if row['block_count'] == max_count else False,axis=1
+        )
+        sub_dfs.append(sub_df)
+    
+    return pd.concat(sub_dfs)
+
+def summarize_biop_replicates(biop_summ_files):
+    '''
+    Given a list of `i` summary files created after parsing a group of `n`
+    BioPropsector runs
+    '''
+    # for each summary file, load it into a df 
+    dfs = [] # collect summary dfs
+    for i,f in enumerate(biop_summ_files):
+        df = pd.read_csv(f,sep='\t')
+        df['settings'] = f'rep{i}'  # add replicate id
+        dfs.append(tag_max(df))     # tag the max motif block for each gene
+
+    # combine all replicate dfs into 1
+    comb_df = pd.concat(dfs)
+
+    selected_seqs = []
+
+    # after combining replicates, find the max blocks for each seq name
+    # and count the number of times a given motif was called 'max'
+    for loc, sub_df in comb_df.groupby('seq_name'):
+        # filter to only "is max" rows
+        max_sub_df = sub_df[sub_df['is_max']]
+        # count the number of iterations where this sequence was a "max row"
+        vc = max_sub_df['seq_block'].value_counts(ascending=False).rename_axis('sequence').reset_index(name='count')
+        # what was the max number of times a sequence was a max row
+        max_agreement = vc['count'].values[0]
+        # choose the sequence(s) that were most often chose as the max
+        selected = vc[vc['count']==max_agreement]['sequence'].values
+
+        selected_seqs.append((loc,selected))
+
+
+    return selected_seqs
+        
+def write_final_selected_seqs(selected_seqs, outf):
+    '''
+    After summarizing BioP replicates, dump final selections to a file. Include ties
+    '''
+    with open(outf, 'w') as f:
+        for (loc, seq_list) in selected_seqs:
+            f.write(f">{loc}\n")
+            # might have been ties... currently writes both seqs
+            for seq in seq_list:
+                f.write(f"{seq}\n")
 
 
 
@@ -107,26 +171,40 @@ def main():
     parser.add_argument('biop_config', help='path to BioProspector config file')
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
-    parser.add_argument('-n', '--num_runs', type=int, default=20,help='Number of times to run BioProspector (default 20)')
+    parser.add_argument('-n', '--num_runs', type=int, default=50,help='Number of times to run BioProspector (default 50)')
+    parser.add_argument('-i', '--num_iter', type=int, default=10,help='Number of times to run n BioProspector iterations and summarize best results (default 10)')
     
     args = parser.parse_args()
 
-    # build list of command to execute
-    cmds_list, biop_raw_dir = build_bioprospector_cmds(args)
+    biop_summ_files = []
+    for i in range(args.num_iter):
+        print(f"\n--- ITERATION {i} ---")
+        # build list of command to execute
+        cmds_list, biop_raw_dir = build_bioprospector_cmds(args)
 
-    # run BioProspector via subprocess
-    run_bioprospector(cmds_list)
+        # run BioProspector via subprocess
+        run_bioprospector(cmds_list)
 
-    # parse all the raw BioProspector output files, summarize 
-    # motifs found, and save output summary and selection files
-    selection_outf = f"{biop_raw_dir}_SELECTION.fa"
-    summary_outf = f"{biop_raw_dir}_SUMMARY.tsv"
+        # parse all the raw BioProspector output files, summarize 
+        # motifs found, and save output summary and selection files
+        selection_outf = f"{biop_raw_dir}_SELECTION.fa"
+        summary_outf = f"{biop_raw_dir}_SUMMARY.tsv"
 
-    bu.compile_and_select(
-        biop_raw_dir, 
-        args.seq_file, 
-        selection_outf,
-        summary_outf)
+        bu.compile_and_select(
+            biop_raw_dir, 
+            args.seq_file, 
+            selection_outf,
+            summary_outf)
+
+        # collect summary file name
+        biop_summ_files.append(summary_outf)
+
+    # compile results from all `i` replicates
+    final_selected_seqs = summarize_biop_replicates(biop_summ_files)
+    
+    # write final output
+    final_selection_outf = os.path.join(args.outdir,"FINAL_BIOP_SELECTIONS.fa")
+    write_final_selected_seqs(final_selected_seqs, final_selection_outf)
 
     print("Done!")
     
