@@ -171,40 +171,38 @@ def main():
     parser.add_argument('biop_config', help='path to BioProspector config file')
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
-    parser.add_argument('-n', '--num_runs', type=int, default=50,help='Number of times to run BioProspector (default 50)')
-    parser.add_argument('-i', '--num_iter', type=int, default=10,help='Number of times to run n BioProspector iterations and summarize best results (default 10)')
+    parser.add_argument('-n', '--num_runs', type=int, default=200,help='Number of times to run BioProspector (default 50)')
+    parser.add_argument('-k', '--top_k', type=int, default=3,help='Number of top motif picks to report for each locus')
     
     args = parser.parse_args()
+    
+    # build list of command to execute
+    cmds_list, biop_raw_dir = build_bioprospector_cmds(args)
 
-    biop_summ_files = []
-    for i in range(args.num_iter):
-        print(f"\n--- ITERATION {i} ---")
-        # build list of command to execute
-        cmds_list, biop_raw_dir = build_bioprospector_cmds(args)
+    # run BioProspector via subprocess
+    run_bioprospector(cmds_list)
 
-        # run BioProspector via subprocess
-        run_bioprospector(cmds_list)
+    # parse all the raw BioProspector output files, summarize 
+    # motifs found, and save output summary and selection files
+    selection_outf = f"{biop_raw_dir}_SELECTION.fa"
+    summary_outf = f"{biop_raw_dir}_SUMMARY.tsv"
+    mov_outf = f"{biop_raw_dir}_TOP_{args.top_k}_MOV.tsv"
 
-        # parse all the raw BioProspector output files, summarize 
-        # motifs found, and save output summary and selection files
-        selection_outf = f"{biop_raw_dir}_SELECTION.fa"
-        summary_outf = f"{biop_raw_dir}_SUMMARY.tsv"
+    bu.compile_and_select(
+        args.top_k,
+        biop_raw_dir, 
+        args.seq_file, 
+        selection_outf,
+        summary_outf,
+        mov_outf)
 
-        bu.compile_and_select(
-            biop_raw_dir, 
-            args.seq_file, 
-            selection_outf,
-            summary_outf)
-
-        # collect summary file name
-        biop_summ_files.append(summary_outf)
 
     # compile results from all `i` replicates
-    final_selected_seqs = summarize_biop_replicates(biop_summ_files)
+    #final_selected_seqs = summarize_biop_replicates(biop_summ_files)
     
     # write final output
-    final_selection_outf = os.path.join(args.outdir,"FINAL_BIOP_SELECTIONS.fa")
-    write_final_selected_seqs(final_selected_seqs, final_selection_outf)
+    # final_selection_outf = os.path.join(args.outdir,"FINAL_BIOP_SELECTIONS.fa")
+    # write_final_selected_seqs(final_selected_seqs, final_selection_outf)
 
     print("Done!")
     

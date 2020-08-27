@@ -544,7 +544,10 @@ def compile_all_biop_results(biop_files, promoter_file,top_motif_only=False, ver
 
 
 
-def select_motifs_with_most_agreement(df,seq_selection_out,summary_out,verbose=False):
+def select_motifs_with_most_agreement(df,
+                                      seq_selection_out,
+                                      summary_out,
+                                      verbose=False):
     '''
     Given a df compiling the motif match results from several bioP runs,
     figure out which motif for each sequence had the most agreement between
@@ -561,7 +564,7 @@ def select_motifs_with_most_agreement(df,seq_selection_out,summary_out,verbose=F
     # for each sequence, count the number of times each seq match was 
     # identified by BioP
     for seq_name,sub_df in dfg:
-        sub_df = dfg.get_group(seq_name)
+        #sub_df = dfg.get_group(seq_name)
         if verbose:
             print(f"Getting seqs for {seq_name}")
         # use value counts function to count number of occurences of each 
@@ -610,11 +613,42 @@ def select_motifs_with_most_agreement(df,seq_selection_out,summary_out,verbose=F
     print("Selection:",seq_selection_out)
     print("Summary:",summary_out)
 
+def write_margin_of_victory_results(top_k, summary_outf, margin_of_victory_outf):
+    '''
+    After having written out the bioprospector summary file, 
+    use that to determine the top k motifs with the most
+    "BioProspector Votes" and calculate the margin of victory 
+    for each motif, for each locus
+    '''
+    # load up the summary file 
+    sum_df = pd.read_csv(summary_outf,sep='\t')
 
-def compile_and_select(biop_raw_dir, 
+    rows = []
+    for loc, df in sum_df.groupby('seq_name'):
+        # get the top k voted motifs
+        top_df = df.sort_values('block_count', ascending=False).head(top_k+1)
+        
+        for i in range(top_k):
+            seq, block_summ, block_count = top_df[['seq_block', 'block_summ', 'block_count']].values[i]
+            next_block_count = top_df['block_count'].values[i+1]
+            # margin of victory (difference between current and next most popular motif)
+            mov = block_count - next_block_count
+
+            # add row to data
+            row = [loc,seq,mov,block_summ, block_count]
+            rows.append(row)
+            
+    mov_df = pd.DataFrame(rows, columns=['loc','sequence','margin_of_victory','motif_summ','raw_votes'])
+    mov_df.to_csv(margin_of_victory_outf, sep='\t',index=False)
+
+    print("Margin of victory:",margin_of_victory_outf)
+
+def compile_and_select(top_k,
+                       biop_raw_dir, 
                        promoter_file, 
                        selection_outf, 
                        summary_outf, 
+                       mov_outf,
                        top_motif_only=False):
     
     # get list of files from bioprospector output directory
@@ -628,5 +662,14 @@ def compile_and_select(biop_raw_dir,
     
     # select the top motif for each seq
     print("Selecting best motif for each sequence...")
-    select_motifs_with_most_agreement(df,selection_outf,summary_outf,verbose=True)
+    select_motifs_with_most_agreement(df,
+                                      selection_outf,
+                                      summary_outf,
+                                      verbose=True)
+
+    # summarize the margin of error
+    print("Reporting top motifs with margins of victory...")
+    write_margin_of_victory_results(top_k, summary_outf, mov_outf)
+
+    
 
