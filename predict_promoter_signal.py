@@ -40,7 +40,8 @@ def build_bioprospector_cmds(args):
     base = os.path.basename(args.seq_file).split('.')[0]
     biop_str = f"W{biop_args['W']}_w{biop_args['w']}_G{biop_args['G']}_g{biop_args['g']}_d{biop_args['d']}_a{biop_args['a']}_n{biop_args['n']}"
     ts = time.strftime("%s",time.gmtime())
-    raw_dir = f"{base}_{biop_str}_BIOP_RAW_{ts}"
+    biop_base_name = f"{base}_{biop_str}_{ts}"
+    raw_dir = biop_base_name +"_BIOP_RAW"
     raw_dir_path = os.path.join(args.outdir,raw_dir)
     
     mkdir_cmd = ['mkdir',raw_dir_path]
@@ -74,7 +75,7 @@ def build_bioprospector_cmds(args):
 
         cmds_list.append(cmds)
 
-    return cmds_list, raw_dir_path
+    return cmds_list, biop_base_name, raw_dir_path
 
 def run_bioprospector(cmds_list):
     '''
@@ -84,7 +85,7 @@ def run_bioprospector(cmds_list):
     print("Executing BioProspector...")
     # get list of processes to execute each BioP command
     proc_list = [Popen(cmd, stdout=PIPE, stderr=PIPE) for cmd in cmds_list]
-    # I think this for loop shoudl exectue the processes in parallel
+    # I think this for loop should exectue the processes in parallel
     for i,proc in enumerate(proc_list):
         print(f"Run {i+1} of {len(proc_list)}")
 
@@ -177,16 +178,16 @@ def main():
     args = parser.parse_args()
     
     # build list of command to execute
-    cmds_list, biop_raw_dir = build_bioprospector_cmds(args)
+    cmds_list, biop_base_name, biop_raw_dir = build_bioprospector_cmds(args)
 
     # run BioProspector via subprocess
     run_bioprospector(cmds_list)
 
     # parse all the raw BioProspector output files, summarize 
     # motifs found, and save output summary and selection files
-    selection_outf = f"{biop_raw_dir}_SELECTION.fa"
-    summary_outf = f"{biop_raw_dir}_SUMMARY.tsv"
-    mov_outf = f"{biop_raw_dir}_TOP_{args.top_k}_MOV.tsv"
+    selection_outf = os.path.join(args.outdir, f"{biop_base_name}_SELECTION.fa")
+    summary_outf = os.path.join(args.outdir, f"{biop_base_name}_SUMMARY.tsv")
+    mov_outf = os.path.join(args.outdir, f"{biop_base_name}_TOP_{args.top_k}_MOV.tsv")
 
     bu.compile_and_select(
         args.top_k,
