@@ -73,3 +73,33 @@ Inputs:
     
 #### Example run command
 `python extract_upstream_regions.py out_dir/loci_in_top_3perc.txt 300 data/5GB1c_sequence.gb out_dir`
+
+### 3.) Search upstream regions for patterns to make promoter predictions
+With the upstream regions for a set of highly expressed genes in hand, we are next interested in searching these sequences for a common pattern. Specifically, we are looking for sigma-70 like promoter patterns which influence strong transcription initiation in this top set of loci. Here, we use a motif finding tool called BioProspector which can accept as input a particular motif structure (e.g., a hexamer, followed by 15-18 bp of spacer, follwed by another hexamer) and search sequence for that structure. Without sepcific instruction for what precise sequence to find, BioProspector will simply use that structure to search for common patterns across all the upstream regions and make a prediction for what a consensus motif may be.
+
+1 run of BioProspector will yield 5 consensus motif predictions and report the *location* in each input sequence for where that consensus motif was found. Since BioProspector's search algorithm invovles some randomness, we run it `n` times and parse the 5 consensus motif predictions out of all `n` runs. The locations of sequence matches from all of these 5x`n` predictions are used as  "votes": how many times was each match location (specific sequence segment at a specific upstream region coordinate) identified by any of the consensus motif predictions? The more votes a match location gets, the more likely we assume it is to actually be the true promoter for this locus (because BioProspector found it so frequently). Sometimes the voting is very clear: 1 location for a given locus' upstream sequence recieves far and away the majority of the votes (high margin of victory). But sometimes it is less clear: there may be two or more sequences which receive a very similar amount of votes (small margin of victory), and thus there is more uncertainty surrounding which sequence is actually the promoter. 
+
+To fully communicate the results of this prediction script, we provide 3 outputs.
+1. SELECTION.fa
+    * A fasta file of the top voted promoter sequence for each locus. The sequence starts exactly at the -35 hexamer, spans a variable spacer, and ends exactly at the end of the -10 hexamer. Thus, the first 6 and last 6 bases of the sequence are the sequences that match the consensus motif blocks identified by BioProspector.
+1. TOP_K_MOV.tsv
+    * The difference between a given match location and the next most-voted-for location is called the Margin of Victory. While SELECTION.fa only shows the absolute top voted sequence, some of these votes may be close calls. This file provides more detailed information about the top `k` match locations with most votes and the margin of victory by which they won. A researcher may wish to inspect the promoter calls with "low margin of victory" as there may be another equally likely promoter sequence than the one provided in the SELECTION.fa
+1. SUMMARY.tsv
+    * A full summary of all the votes recorded across the `n` BioProspector runs. A researcher may wish to consult this if they want more details about vote patterns than just the top `k`.
+
+Inputs:
+1. BioProspector config file
+    * configuration of the BioProspector input arguments. An example config file can be found in `config/bioprospector_config.txt`
+1. output directory
+    * directory where the 3 output files (SELECTION.fa, TOP_K_MOV.tsv, and SUMMARY.tsv) will be stored
+1. `n` (def: 200)
+    * Number of BioProspector iterations to run
+1. `k` (def: 3)
+    * Number of top motifs to report in the TOP_K_MOV.tsv file
+    
+#### Example run command
+`python predict_promoter_signal.py out_dir/loci_in_top_3perc_upstream_regions_w300_min20_trunc.fa config/bioprospector_config.txt biop_out_dir -n 500 -k 5`
+
+
+## Validation
+TODO
