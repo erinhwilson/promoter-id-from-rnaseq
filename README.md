@@ -16,10 +16,10 @@ And 3 main outputs:
 
 ## Workflow Instructions
 
-### Obtain RNA-seq data matrix
+### 0.) Obtain RNA-seq data matrix
 Obtain a data matrix where each row is a genome locus, each column is an RNA-seq sample, and each value is the RNA-seq read count in transcripts per million (TPM). The choice of workflow that transforms raw RNA-seq data (fastq) to such a matrix is flexible. Here we used barrelseq (code available here).
 
-### Select a set of top genes
+### 1.) Select a set of top genes
 Once data is properly formatted as a matrix of genes by experimental samples, we can use these data to select a set of highly expressed genes that remain high across conditions.
 
 Inputs:
@@ -52,5 +52,24 @@ Inputs:
     * if there are entire experimental categories that you wish to exclude but their samples are in the TPM matrix, use this file to specify only the experimental categories to keep for this analysis
 
 
-### Example run command
-`python get_top_gene_set.py data/extract_TPM_counts.tsv locus_tag 3 120 data/sample2condition.txt data/5GB1c_sequence.gb output -c config/conditions_to_include.txt -s config/samples_to_include.txt`
+#### Example run command
+`python get_top_gene_set.py data/extract_TPM_counts.tsv locus_tag 3 120 data/sample2condition.txt data/5GB1c_sequence.gb out_dir -c config/conditions_to_include.txt -s config/samples_to_include.txt`
+
+### 2.) Extract upstream sequence regions
+With a top set of loci identified in `get_top_gene_set.py`, the next script will go to the genbank file and actually extract the sequence windows upstream of these top loci. By default, the script will extract a 300bp window immediately upstream of the feature start coordinate. However, this script is conscious of other nearby annotations which may be within 300bp, and by default, will truncate the window extracted so as not to include coding sequence of other features. However, some sequences are so close together (e.g., two divergently expressed genes' whose start coordinates are within 10 bp), so at a minimum, we will extract 20bp upstream, even if it overlaps with another feature. [TODO add images depecting these scenarios]
+
+Inputs:
+1. List of locus ids
+    * Output from `get_top_gene_set.py`: two-column tab delimited file. First column is the locus id. Second column is a boolean if the locus is "possibly in an operon" as determined by the `min_dist` param in the `get_top_gene_set.py` script.
+1. genbank annotation and sequence file
+1. window size
+    * size of the upstream window to extract (default: 300bp)
+1. min upstream distance
+    * sometimes genes are too close (or even overlapping). By default this program will truncate upstream sequences to avoid including coding sequence DNA of other features, but if this parameters sets the minimum sequence that must be extracted, even if there is some overlap
+1. truncation mode
+    * by default, this program will truncate upstream regions to avoid coding sequences of nearby features. however this mode can be turned off with `--no_trunc` and exactly `window size` bases will be extracte from every locus
+1. output directory
+    * directory where fasta file of upstream regions of each of the top loci will be stored. Note: loci flagged as "possibly in an operon" will be excluded from this fasta file (as specified by column 2 of the "list of locus ids" input file.
+    
+#### Example run command
+`python extract_upstream_regions.py out_dir/loci_in_top_3perc.txt 300 data/5GB1c_sequence.gb out_dir`
