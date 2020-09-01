@@ -34,6 +34,7 @@ def get_all_upstream_regions(gb_file,
                              window_size, 
                              min_dist,# default=20 in argparse
                              no_truncate,# default=False in argparse
+                             verbose=False
                              ):
     '''
     Given a genbank file, parse out all its features into 6-tuples
@@ -54,8 +55,6 @@ def get_all_upstream_regions(gb_file,
     '''
     # load genbank features and genome
     feats,genome = gu.get_feats_and_genome(gb_file)
-    print(feats[:5])
-    print(genome[:20])
 
     # dictionary to collect feature upstream seqs
     upstream_regions = {}
@@ -85,15 +84,16 @@ def get_all_upstream_regions(gb_file,
                     # how far is the upstream feat from the current?
                     upstream_dist = upstream_feat[LEFT_IDX] - cur_feat[RIGHT_IDX]
                     # if it's closer than the window we extracted, we need
-                    # to truncate
+                    # to truncate    
                     if upstream_dist < window_size:
-                        if upstream_dist < min_dist:
-                            print("SHORT DIST!")
-                            print("Cur feat:")
-                            print(cur_feat)
-                            print("Up feat:")
-                            print(upstream_feat)
-                            print(f"distance:{upstream_dist}\n")
+                        if verbose:
+                            if upstream_dist < min_dist:
+                                print("SHORT DIST!")
+                                print("Cur feat:")
+                                print(cur_feat)
+                                print("Up feat:")
+                                print(upstream_feat)
+                                print(f"distance:{upstream_dist}\n")
                         # if upstream distance is too small (features are closer than
                         # min_dist), then set the upstream dist to at least min_dist
                         upstream_dist = max(upstream_dist, min_dist)
@@ -130,15 +130,16 @@ def get_all_upstream_regions(gb_file,
                     upstream_dist = cur_feat[LEFT_IDX] - upstream_feat[RIGHT_IDX]
 
                     # if it's closer than the window we extracted, we need
-                    # to truncate
+                    # to truncate    
                     if upstream_dist < window_size:
-                        if upstream_dist < min_dist:
-                            print("SHORT DIST!")
-                            print("Cur feat:")
-                            print(cur_feat)
-                            print("Up feat:")
-                            print(upstream_feat)
-                            print(f"distance:{upstream_dist}\n")
+                        if verbose:
+                            if upstream_dist < min_dist:
+                                print("SHORT DIST!")
+                                print("Cur feat:")
+                                print(cur_feat)
+                                print("Up feat:")
+                                print(upstream_feat)
+                                print(f"distance:{upstream_dist}\n")
                         # if upstream distance is too small (features are closer than
                         # min_dist), then set the upstream dist to at least min_dist
                         upstream_dist = max(upstream_dist, min_dist)
@@ -210,10 +211,12 @@ def main():
     args = parser.parse_args()
 
     # get loci
+    print("Loading loci of interest...")
     loci = load_loci(args.loci_file)
     print(loci)
 
     # get upstream regions
+    print("Getting upstream regions from genbank")
     upstream_regions = get_all_upstream_regions(
         args.gb_file,
         args.window_size, 
@@ -225,6 +228,7 @@ def main():
     # | SAVE |
     # +------+
     # save to a fasta file
+    print("Saving fasta of upstream regions for loci of interest...")
     out_path = write_fasta_file(args, loci, upstream_regions)    
 
     print(f"Output written to {out_path}")

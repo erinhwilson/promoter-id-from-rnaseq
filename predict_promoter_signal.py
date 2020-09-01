@@ -172,7 +172,7 @@ def main():
     parser.add_argument('biop_config', help='path to BioProspector config file')
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
-    parser.add_argument('-n', '--num_runs', type=int, default=200,help='Number of times to run BioProspector (default 50)')
+    parser.add_argument('-n', '--num_runs', type=int, default=200,help='Number of times to run BioProspector (default 200)')
     parser.add_argument('-k', '--top_k', type=int, default=3,help='Number of top motif picks to report for each locus')
     
     args = parser.parse_args()

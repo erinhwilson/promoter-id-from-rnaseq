@@ -266,7 +266,7 @@ def main():
     pos_feats,\
     neg_feats = load_data_from_args(args)
     n = args.top_n
-    min_dist - args.operon_min_dist
+    min_dist = args.operon_min_dist
 
     # +-------------------+
     # | OPERON ESTIMATION |
