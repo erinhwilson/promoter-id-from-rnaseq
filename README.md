@@ -19,7 +19,7 @@ And 3 main outputs:
 ### 0.) Obtain RNA-seq data matrix
 Obtain a data matrix where each row is a genome locus, each column is an RNA-seq sample, and each value is the RNA-seq read count in transcripts per million (TPM). The choice of workflow that transforms raw RNA-seq data (fastq) to a TPM matrix is flexible. In this work, we used barrelseq (code available [here](https://github.com/BeckResearchLab/barrelseq). An example TPM matrix can be found in `data/extract_TPM_counts.tsv`
 
-### 1.) Select a set of top genes
+### 1.) Select a set of top genes (`get_top_gene_set.py`)
 Once data is properly formatted as a matrix of loci by experimental samples, we can use these data to select a set of highly expressed loci that remain high across conditions.
 
 Inputs:
@@ -43,7 +43,7 @@ Inputs:
     | 5GB1_FM40_T0_TR1 | NoCu |
     | 5GB1_FM34_T8_TR1 | HighCu |
   
-    * this must be a simple 2-column tab-delimited file
+    * this must be a simple 2-column tab-delimited file (an example can be found at `data/sample2condition.txt`
     
 1. genbank annotation and sequence file
     * the `locus_tag` of the features in this file should exactly match the locus ids in the TPM data matrix. 
@@ -58,7 +58,7 @@ Inputs:
 #### Example run command
 `python get_top_gene_set.py data/extract_TPM_counts.tsv locus_tag 3 120 data/sample2condition.txt data/5GB1c_sequence.gb out_dir -c config/conditions_to_include.txt -s config/samples_to_include.txt`
 
-### 2.) Extract upstream sequence regions
+### 2.) Extract upstream sequence regions (`extract_upstream_regions.py`)
 With a top set of loci identified in `get_top_gene_set.py`, the next script will go to the genbank file and actually extract the DNA sequence windows upstream of these top loci. By default he script will extract a 300bp window immediately upstream of the feature start coordinate. 
 
 However, this script is conscious of other nearby annotations which may be within 300bp, and by default, will truncate the window extracted so as not to include partial coding sequences of other features. But on the other hand, some sequences are very close together (e.g., two divergently expressed genes' whose start coordinates are within 10 bp), so at a minimum, we will extract 20bp upstream, even if it overlaps with another feature. [TODO add images depecting these scenarios]
@@ -79,7 +79,7 @@ Inputs:
 #### Example run command
 `python extract_upstream_regions.py out_dir/loci_in_top_3perc.txt data/5GB1c_sequence.gb out_dir`
 
-### 3.) Search upstream regions for patterns to make promoter predictions
+### 3.) Search upstream regions for patterns to make promoter predictions (`predict_promoter_signal.py`)
 With the upstream regions for a set of highly expressed loci in hand, we are next interested in searching these sequences for a common pattern. Specifically, we are looking for sigma-70 like promoter patterns which influence strong transcription initiation in this top set of loci. Here, we use a motif finding tool called BioProspector which can accept as input a particular motif structure (e.g., a hexamer, followed by 15-18 bp of spacer, follwed by another hexamer) and search sequence for that structure. Without sepcific instructions for what precise sequence to find, BioProspector will simply use that structure to search for common patterns across all the upstream regions and make a prediction for what a consensus motif may be. (More details about BioProspector can be found [here](https://psb.stanford.edu/psb-online/proceedings/psb01/liu.pdf)). 
 
 1 run of BioProspector will yield 5 consensus motif predictions and report the *location* in each input sequence for where that consensus motif was found. Since BioProspector's search algorithm invovles some randomness, we run it `n` times and parse the 5 consensus motif predictions out of all `n` runs. The locations of sequence matches from all of these 5 x `n` predictions are used as  "votes": how many times was each match location (aka, specific sequence segment at a specific upstream region coordinate) identified by any of the consensus motif predictions? The more votes a match location gets, the more likely we assume it is to actually be the true promoter for this locus (because BioProspector found it so frequently). 
