@@ -201,11 +201,11 @@ def main():
     parser = argparse.ArgumentParser(description='Extract upstream DNA regions from set of locus ids.')
     # Required args
     parser.add_argument('loci_file', help='Two-column tab-delimited file containing list of locus IDs and boolean operon flag')
-    parser.add_argument('window_size', type=int, help='bp length of upstream region to extract')
     parser.add_argument('gb_file', help='Genbank file with feature annotations')
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
-    parser.add_argument('-m', '--min_dist', default=20,help='Minimum upstream distance to extract, even if features are too close.')
+    parser.add_argument('-w', '--window_size',default=300, type=int, help='bp length of upstream region to extract')
+    parser.add_argument('-m', '--min_dist',   default=20,type=int,help='Minimum upstream distance to extract, even if features are too close.')
     parser.add_argument('-t', '--no_trunc', action='store_true',help='Turn OFF truncation mode - so always extract window_size bp, even if it overlaps with other features')
     
     args = parser.parse_args()
