@@ -1,0 +1,198 @@
+locus_tag	gene_symbol	product	type	op?	top_perc
+EQU24_RS16195		hypothetical protein	CDS	False	1
+EQU24_RS18355		hypothetical protein	CDS	False	1
+EQU24_RS18130	moxG	cytochrome c(L), periplasmic	CDS	True	1
+EQU24_RS18125	moxI	methanol dehydrogenase	CDS	True	1
+EQU24_RS12965		hypothetical protein	CDS	True	1
+EQU24_RS19305	pmoB	methane monooxygenase/ammonia monooxygenase subunit B	CDS	True	1
+EQU24_RS19310	pmoA	methane monooxygenase/ammonia monooxygenase subunit A	CDS	True	1
+EQU24_RS18140	moxF	PQQ-dependent dehydrogenase, methanol/ethanol family	CDS	False	1
+EQU24_RS12525	ssrA	transfer-messenger RNA	tmRNA	False	1
+EQU24_RS19315	pmoC	methane monooxygenase/ammonia monooxygenase subunit C	CDS	False	1
+EQU24_RS19765	rnpB	RNase P RNA component class A	ncRNA	False	1
+EQU24_RS12095		cytochrome c	CDS	False	1
+EQU24_RS22110		hypothetical protein	CDS	False	1
+EQU24_RS04160	ssrS	6S RNA	ncRNA	True	1
+EQU24_RS18135	moxJ	methanol oxidation system protein MoxJ	CDS	True	2
+EQU24_RS21665	trxA	thioredoxin TrxA	CDS	False	2
+EQU24_RS15100		HU family DNA-binding protein	CDS	False	2
+EQU24_RS03495		cold-shock protein	CDS	False	2
+EQU24_RS15745		cold-shock protein	CDS	False	2
+EQU24_RS10370	acpP	acyl carrier protein	CDS	False	2
+EQU24_RS21565		transaldolase	CDS	False	2
+EQU24_RS07385	infC	translation initiation factor IF-3	CDS	True	2
+EQU24_RS09110	fae	formaldehyde-activating enzyme	CDS	True	2
+EQU24_RS15535		hypothetical protein	CDS	False	2
+EQU24_RS07390	rpmI	50S ribosomal protein L35	CDS	False	2
+EQU24_RS02970	pqqA	pyrroloquinoline quinone precursor peptide PqqA	CDS	False	2
+EQU24_RS07185		glutamate--ammonia ligase	CDS	False	3
+EQU24_RS21720		hypothetical protein	CDS	False	3
+EQU24_RS22055		hypothetical protein	CDS	True	3
+EQU24_RS15705		cold-shock protein	CDS	False	3
+EQU24_RS02895		exosortase system-associated protein, TIGR04073 family	CDS	False	3
+EQU24_RS19105	rpsT	30S ribosomal protein S20	CDS	False	3
+EQU24_RS18060	rplM	50S ribosomal protein L13	CDS	False	3
+EQU24_RS02265		F0F1 ATP synthase subunit epsilon	CDS	True	3
+EQU24_RS02240		F0F1 ATP synthase subunit B	CDS	True	3
+EQU24_RS21560	fbaA	class II fructose-bisphosphate aldolase	CDS	False	3
+EQU24_RS21040	rpmB	50S ribosomal protein L28	CDS	False	3
+EQU24_RS03890	rplB	50S ribosomal protein L2	CDS	True	4
+EQU24_RS18065	rpsI	30S ribosomal protein S9	CDS	True	4
+EQU24_RS04275		pilin	CDS	False	4
+EQU24_RS04255	rpmE	50S ribosomal protein L31	CDS	False	4
+EQU24_RS15855		FKBP-type peptidyl-prolyl cis-trans isomerase	CDS	False	4
+EQU24_RS04025	sodB	superoxide dismutase [Fe]	CDS	False	4
+EQU24_RS03950	rplF	50S ribosomal protein L6	CDS	True	4
+EQU24_RS03985	rpsM	30S ribosomal protein S13	CDS	True	4
+EQU24_RS07395	rplT	50S ribosomal protein L20	CDS	True	4
+EQU24_RS13170		SRPBCC family protein	CDS	False	4
+EQU24_RS10160		exosortase system-associated protein, TIGR04073 family	CDS	False	4
+EQU24_RS02900		OmpA family protein	CDS	True	4
+EQU24_RS02525		sulfurtransferase	CDS	False	4
+EQU24_RS21715		peroxiredoxin	CDS	False	4
+EQU24_RS21570		hypothetical protein	CDS	True	4
+EQU24_RS07170		P-II family nitrogen regulator	CDS	False	4
+EQU24_RS02235	atpE	F0F1 ATP synthase subunit C	CDS	True	4
+EQU24_RS19805		septal ring lytic transglycosylase RlpA family protein	CDS	False	4
+EQU24_RS09515		triose-phosphate isomerase	CDS	True	4
+EQU24_RS04005		50S ribosomal protein L17	CDS	True	5
+EQU24_RS10395	rpmF	50S ribosomal protein L32	CDS	True	5
+EQU24_RS07950	csrA	carbon storage regulator CsrA	CDS	True	5
+EQU24_RS15280	gap	type I glyceraldehyde-3-phosphate dehydrogenase	CDS	False	5
+EQU24_RS05250	rpsO	30S ribosomal protein S15	CDS	False	5
+EQU24_RS05540	rpsB	30S ribosomal protein S2	CDS	False	5
+EQU24_RS14110		cytochrome c oxidase subunit 3	CDS	True	5
+EQU24_RS15285	pyk	pyruvate kinase	CDS	True	5
+EQU24_RS12970		L,D-transpeptidase family protein	CDS	False	5
+EQU24_RS07955		tRNA-Ser	tRNA	True	5
+EQU24_RS03980	rpmJ	50S ribosomal protein L36	CDS	True	5
+EQU24_RS02245		F0F1 ATP synthase subunit delta	CDS	True	5
+EQU24_RS18120	moxR	MoxR family ATPase	CDS	False	5
+EQU24_RS03885		50S ribosomal protein L23	CDS	True	5
+EQU24_RS03810	secE	preprotein translocase subunit SecE	CDS	True	5
+EQU24_RS01475		formate dehydrogenase subunit gamma	CDS	False	5
+EQU24_RS03990	rpsK	30S ribosomal protein S11	CDS	True	5
+EQU24_RS03815	nusG	transcription termination/antitermination protein NusG	CDS	True	5
+EQU24_RS03920	rpsQ	30S ribosomal protein S17	CDS	True	5
+EQU24_RS09785		NADH:ubiquinone reductase (Na(+)-transporting) subunit F	CDS	True	5
+EQU24_RS03945	rpsH	30S ribosomal protein S8	CDS	True	5
+EQU24_RS03780		50S ribosomal protein L25/general stress protein Ctc	CDS	True	5
+EQU24_RS03960		30S ribosomal protein S5	CDS	True	5
+EQU24_RS03970	rplO	50S ribosomal protein L15	CDS	True	5
+EQU24_RS21930		ribulose-phosphate 3-epimerase	CDS	False	5
+EQU24_RS03310		hypothetical protein	CDS	False	5
+EQU24_RS03925	rplN	50S ribosomal protein L14	CDS	True	5
+EQU24_RS02260	atpD	F0F1 ATP synthase subunit beta	CDS	True	5
+EQU24_RS02920		hypothetical protein	CDS	False	6
+EQU24_RS19390		nucleoside-diphosphate kinase	CDS	False	6
+EQU24_RS03195	raiA	ribosome-associated translation inhibitor RaiA	CDS	True	6
+EQU24_RS01470		NADH-quinone oxidoreductase subunit NuoF	CDS	True	6
+EQU24_RS01465		formate dehydrogenase subunit alpha	CDS	True	6
+EQU24_RS00950		hypothetical protein	CDS	True	6
+EQU24_RS09775		NADH:ubiquinone reductase (Na(+)-transporting) subunit D	CDS	True	6
+EQU24_RS02250		F0F1 ATP synthase subunit alpha	CDS	True	6
+EQU24_RS18790		CBS domain-containing protein	CDS	False	6
+EQU24_RS03785		tRNA-Tyr	tRNA	False	6
+EQU24_RS13345	fae	formaldehyde-activating enzyme	CDS	False	6
+EQU24_RS04000	rpoA	DNA-directed RNA polymerase subunit alpha	CDS	True	6
+EQU24_RS03975	secY	preprotein translocase subunit SecY	CDS	True	6
+EQU24_RS15415		PEP-CTERM sorting domain-containing protein	CDS	False	6
+EQU24_RS03910	rplP	50S ribosomal protein L16	CDS	True	6
+EQU24_RS15195	hfq	RNA chaperone Hfq	CDS	False	6
+EQU24_RS07440		Bax inhibitor-1/YccA family protein	CDS	False	6
+EQU24_RS09990	rpsF	30S ribosomal protein S6	CDS	False	6
+EQU24_RS14360		30S ribosomal protein S1	CDS	True	6
+EQU24_RS06485		hypothetical protein	CDS	False	6
+EQU24_RS14220		hypothetical protein	CDS	False	6
+EQU24_RS14130	coxB	cytochrome c oxidase subunit II	CDS	False	6
+EQU24_RS17625		50S ribosomal protein L19	CDS	True	6
+EQU24_RS15180	hflC	protease modulator HflC	CDS	True	7
+EQU24_RS18425		transposase	CDS	False	7
+EQU24_RS10145		hypothetical protein	CDS	False	7
+EQU24_RS11685		NgoFVII family restriction endonuclease	CDS	False	7
+EQU24_RS22155	rpmH	50S ribosomal protein L34	CDS	False	7
+EQU24_RS02075		VacJ family lipoprotein	CDS	False	7
+EQU24_RS07415		MerR family transcriptional regulator	CDS	True	7
+EQU24_RS09770		Na(+)-translocating NADH-quinone reductase subunit C	CDS	True	7
+EQU24_RS00520	rpoD	RNA polymerase sigma factor RpoD	CDS	True	7
+EQU24_RS09760		Na(+)-translocating NADH-quinone reductase subunit A	CDS	False	7
+EQU24_RS00590		hypothetical protein	CDS	False	7
+EQU24_RS00945		metal-binding protein	CDS	False	7
+EQU24_RS03875	rplC	50S ribosomal protein L3	CDS	True	7
+EQU24_RS03955		50S ribosomal protein L18	CDS	True	7
+EQU24_RS04010		ferredoxin family protein	CDS	False	7
+EQU24_RS03935	rplE	50S ribosomal protein L5	CDS	True	7
+EQU24_RS03905	rpsC	30S ribosomal protein S3	CDS	True	7
+EQU24_RS02585		hypothetical protein	CDS	False	7
+EQU24_RS03900		50S ribosomal protein L22	CDS	True	7
+EQU24_RS02810		sigma-54-dependent Fis family transcriptional regulator	CDS	True	7
+EQU24_RS17045		hypothetical protein	CDS	False	8
+EQU24_RS03995	rpsD	30S ribosomal protein S4	CDS	True	8
+EQU24_RS15545		hypothetical protein	CDS	False	8
+EQU24_RS18100	mxaC	VWA domain-containing protein	CDS	True	8
+EQU24_RS18105	mxaA	hypothetical protein	CDS	False	8
+EQU24_RS03205		hypothetical protein	CDS	True	8
+EQU24_RS03850	rpsL	30S ribosomal protein S12	CDS	False	8
+EQU24_RS03830		50S ribosomal protein L10	CDS	False	8
+EQU24_RS03820	rplK	50S ribosomal protein L11	CDS	True	8
+EQU24_RS19125	rplU	50S ribosomal protein L21	CDS	False	8
+EQU24_RS02230	atpB	F0F1 ATP synthase subunit A	CDS	True	8
+EQU24_RS02225		F0F1 ATP synthase assembly protein I	CDS	True	8
+EQU24_RS21035	rpmG	50S ribosomal protein L33	CDS	True	8
+EQU24_RS01460	fdhD	formate dehydrogenase accessory sulfurtransferase FdhD	CDS	True	8
+EQU24_RS00505	rpsU	30S ribosomal protein S21	CDS	False	8
+EQU24_RS03855	rpsG	30S ribosomal protein S7	CDS	True	8
+EQU24_RS04650		hypothetical protein	CDS	False	8
+EQU24_RS00415		rhodanese-like domain-containing protein	CDS	True	8
+EQU24_RS09780	nqrE	NADH:ubiquinone reductase (Na(+)-transporting) subunit E	CDS	True	8
+EQU24_RS10365	fabF	beta-ketoacyl-ACP synthase II	CDS	False	8
+EQU24_RS09520	secG	preprotein translocase subunit SecG	CDS	True	8
+EQU24_RS11235		type VI secretion system tube protein Hcp	CDS	False	8
+EQU24_RS12305		hypothetical protein	CDS	False	8
+EQU24_RS07835	dksA	RNA polymerase-binding protein DksA	CDS	False	8
+EQU24_RS14125	ctaD	cytochrome c oxidase subunit I	CDS	True	8
+EQU24_RS07200		transketolase	CDS	False	8
+EQU24_RS18605	xoxF	PQQ-dependent dehydrogenase, methanol/ethanol family	CDS	False	9
+EQU24_RS12690	aroQ	type II 3-dehydroquinate dehydratase	CDS	False	9
+EQU24_RS04825		OmpH family outer membrane protein	CDS	True	9
+EQU24_RS08650	groS	co-chaperone GroES	CDS	False	9
+EQU24_RS19285		hypothetical protein	CDS	True	9
+EQU24_RS19165		hypothetical protein	CDS	False	9
+EQU24_RS09115		triphosphoribosyl-dephospho-CoA synthase	CDS	True	9
+EQU24_RS01455		formate dehydrogenase subunit delta	CDS	False	9
+EQU24_RS10400		metal-binding protein	CDS	False	9
+EQU24_RS22050		winged helix-turn-helix transcriptional regulator	CDS	False	9
+EQU24_RS12235		Hsp20/alpha crystallin family protein	CDS	True	9
+EQU24_RS03825	rplA	50S ribosomal protein L1	CDS	True	9
+EQU24_RS09995	rpsR	30S ribosomal protein S18	CDS	True	9
+EQU24_RS07845		peroxiredoxin	CDS	False	9
+EQU24_RS12695		acetyl-CoA carboxylase biotin carboxyl carrier protein	CDS	True	9
+EQU24_RS05735		group 1 truncated hemoglobin	CDS	False	9
+EQU24_RS09800		CBS domain-containing protein	CDS	True	9
+EQU24_RS07015		cytochrome-c peroxidase	CDS	False	9
+EQU24_RS18080	rpiA	ribose-5-phosphate isomerase RpiA	CDS	False	9
+EQU24_RS16055		cold-shock protein	CDS	False	9
+EQU24_RS15110	clpX	ATP-dependent Clp protease ATP-binding subunit ClpX	CDS	True	9
+EQU24_RS05260		c-type cytochrome	CDS	False	9
+EQU24_RS03870	rpsJ	30S ribosomal protein S10	CDS	True	9
+EQU24_RS04070	ilvC	ketol-acid reductoisomerase	CDS	False	9
+EQU24_RS07420		tRNA-Pro	tRNA	True	9
+EQU24_RS00530		methionine adenosyltransferase	CDS	True	10
+EQU24_RS11085		rubredoxin	CDS	False	10
+EQU24_RS00595		multicopper oxidase	CDS	False	10
+EQU24_RS06155		methylenetetrahydromethanopterin dehydrogenase	CDS	True	10
+EQU24_RS14315	fae	formaldehyde-activating enzyme	CDS	False	10
+EQU24_RS00535		adenosylhomocysteinase	CDS	True	10
+EQU24_RS11410		hypothetical protein	CDS	True	10
+EQU24_RS02060		peptidase M4	CDS	False	10
+EQU24_RS11455	htpX	protease HtpX	CDS	False	10
+EQU24_RS09505	ftsH	ATP-dependent zinc metalloprotease FtsH	CDS	False	10
+EQU24_RS02255	atpG	F0F1 ATP synthase subunit gamma	CDS	True	10
+EQU24_RS03930	rplX	50S ribosomal protein L24	CDS	True	10
+EQU24_RS17685		flagellar protein FlaG	CDS	False	10
+EQU24_RS18660	glgC	glucose-1-phosphate adenylyltransferase	CDS	False	10
+EQU24_RS07680		hypothetical protein	CDS	False	10
+EQU24_RS03215	minD	septum site-determining protein MinD	CDS	True	10
+EQU24_RS18190		hypothetical protein	CDS	False	10
+EQU24_RS20385		hypothetical protein	CDS	True	10
+EQU24_RS05210		HEAT repeat domain-containing protein	CDS	False	10
