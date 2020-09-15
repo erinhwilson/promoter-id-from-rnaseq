@@ -1,10 +1,13 @@
 # bioprospector_utils.py
 
+import altair as alt
 import logomaker
 from os import listdir
 from os.path import isfile, join
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import seaborn as sns
 import re
 
 
@@ -49,7 +52,7 @@ class SeqMotifMatch_2B:
         
         
     def pprint(self):
-        print(f"Seq: {self.name}")
+        print(f"\nSeq: {self.name}")
         print(f"Motif {self.motif_id} match instance #{self.site_num}")
         print(f"Length: {self.seq_len}, Block 1: {self.block1pos}, Block 2: {self.block2pos}")
         print(f"{self.block1seq} -- ({self.spacer}) -- {self.block2seq}")
@@ -247,16 +250,16 @@ class Motif_2B:
         
         plt.show()
 
-    def get_color(row):
-        pal = sns.color_palette("hls", 4)
-        if row['value'] == 1.0 and row['instance']=='1':
+    def get_color(self,row):
+        pal = sns.color_palette("hls", 2)
+        if row['value'] == 1.0: #and row['instance']=='1':
             return pal.as_hex()[0]
-        elif row['value'] == 2.0 and row['instance']=='1':
+        elif row['value'] == 2.0: #and row['instance']=='1':
             return pal.as_hex()[1]
-        elif row['value'] == 1.0 and row['instance']=='2':
-            return pal.as_hex()[2]
-        elif row['value'] == 2.0 and row['instance']=='2':
-            return pal.as_hex()[3]
+        # elif row['value'] == 1.0 and row['instance']=='2':
+        #     return pal.as_hex()[2]
+        # elif row['value'] == 2.0 and row['instance']=='2':
+        #     return pal.as_hex()[3]
         elif row['value'] == -1.0:
             return 'white'
         else:
@@ -301,7 +304,7 @@ class Motif_2B:
 
         # chart initialization
         charts = []
-        ticks = [int(x) for x in list(np.arange(-100,0,10))]
+        #ticks = [int(x) for x in list(np.arange(-100,0,10))]
         
         # group by seq name (be sure to capture multiple instances of a 
         # matches of the motif to a sequence
@@ -331,17 +334,18 @@ class Motif_2B:
                 arr[b2_s:b2_e+1] = 2
 
                 # provide padding if seq is shorter than 100
-                if len(arr)<100:
-                    # array of -1s
-                    padding = np.zeros(100-len(arr)) + -1 
-                    arr = np.concatenate((padding,arr))
+                # if len(arr)<100:
+                #     # array of -1s
+                #     padding = np.zeros(100-len(arr)) + -1 
+                #     arr = np.concatenate((padding,arr))
 
                 # put all the data into lists (later will make a df for altair)
                 arrs.append(arr)
                 instance_arrs.append([row['instance'] for x in arr])
                 b1seq_arrs.append([b1_seq for x in arr])
                 b2seq_arrs.append([b2_seq for x in arr])
-                pos_arrs.append(np.arange(-100,0))
+                #pos_arrs.append(np.arange(-100,0))
+                pos_arrs.append(np.arange(0-row.seq_len,0))
                 
 
 
@@ -351,15 +355,15 @@ class Motif_2B:
             mask_df['b1_seq'] = np.concatenate(b1seq_arrs).ravel()
             mask_df['b2_seq'] = np.concatenate(b2seq_arrs).ravel()
             mask_df['pos'] = np.concatenate(pos_arrs).ravel()
-            mask_df['color'] = mask_df.apply(lambda row: get_color(row),axis=1)
+            mask_df['color'] = mask_df.apply(lambda row: self.get_color(row),axis=1)
 
             # build altair heatmap for a particular sequence
             chart = alt.Chart(
                 mask_df,
                 title=f"Motif loc in {name}"
             ).mark_rect().encode(
-                x=alt.X('pos:O',axis=alt.Axis(values=ticks)),
-                y=alt.Y('instance:O'),
+                x=alt.X('pos:O'),#,axis=alt.Axis(values=ticks)),
+                y=alt.Y('instance:O',axis=alt.Axis(title="Motif Instance in Seq")),
                 color=alt.Color('color:N',scale=None),
                 tooltip=["b1_seq:N",'b2_seq:N'],
             ).properties(
