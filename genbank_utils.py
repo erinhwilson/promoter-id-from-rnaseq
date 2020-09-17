@@ -21,6 +21,19 @@ def get_genome_from_genbank(gb_file):
     seq_record = SeqIO.parse(gb_file, "genbank").__next__()
     return seq_record.seq
 
+def get_genome_fwd_rev_len(gb_file):
+    '''
+    Return the genome strings for the fwd and reverse strands
+    and the length
+    '''
+    genome = get_genome_from_genbank(gb_file)
+    genome_fwd = str(genome)
+    genome_rev = str(genome.reverse_complement())
+    genome_len = len(genome_fwd)
+
+    return genome_fwd, genome_rev, genome_len
+
+
 def get_feature_tuples_from_genbank(gb_file):
     '''
     Given a genbank file, parse out all of it's features into a 5-tuple 
@@ -55,7 +68,7 @@ def get_pos_neg_features(gb_file):
     '''
     feats = get_feature_tuples_from_genbank(gb_file)
 
-    feats_filt = [x for x in feats if x[TYPE_IDX] != 'gene']
+    feats_filt = [x for x in feats if (x[TYPE_IDX] != 'gene') and (x[TYPE_IDX] != 'source')]
         
     # separate pos and neg lists and sort by gene start coordinate
     pos_feats = [x for x in feats_filt if x[STRAND_IDX]== 1]
@@ -125,5 +138,34 @@ def get_feat2meta_dict(genbank_path):
                 feat_list.append((lt,metadata))
 
     return dict(feat_list)
+
+
+def get_pos_neg_relative_feature_coords(gb_file, genome_len):
+    '''
+    Given a genbank file, load its features and return 
+    a simple tuple of it's (start, end, locus_tag). For
+    feats on the negative strand, give it's coords relative
+    to the genome reverse complement.
+    '''
+
+    pos_feats, neg_feats = get_pos_neg_features(gb_file)
+
+    pos_feat_coords = [(x[LEFT_IDX], 
+                        x[RIGHT_IDX],
+                        x[LOCUS_IDX]) for x in pos_feats]
+    
+    # subtract from genome len to get position on rev compelement
+    # also reverse the list
+    neg_feat_coords = [(genome_len - x[RIGHT_IDX], 
+                        genome_len - x[LEFT_IDX],
+                        x[LOCUS_IDX]) for x in neg_feats][::-1]
+
+    return pos_feat_coords, neg_feat_coords
+
+
+
+
+
+
 
 
