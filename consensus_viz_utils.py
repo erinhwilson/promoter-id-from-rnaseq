@@ -178,9 +178,9 @@ def build_genome_position_category_df(pos_dist_arr, neg_dist_arr):
         elif num <= 100:
             return "<100 to ATG"
         elif num <=300:
-            return "<300 to ATG"
+            return "100:300 to ATG"
         else:
-            return "intergenic far from ATG"
+            return "intergenic"
 
     # count number of positions in each genome category
     pos_cat_dict = Counter([get_category(int(x)) for x in pos_dist_arr])
@@ -195,10 +195,10 @@ def build_genome_position_category_df(pos_dist_arr, neg_dist_arr):
     cat_df['total'] = cat_df.apply(lambda row: row['pos_count'] + row['neg_count'],axis=1)
     
     # add row combining results from both <100 and <300 of ATG
-    all_300_pos = pos_cat_dict['<300 to ATG'] + pos_cat_dict['<100 to ATG']
-    all_300_neg = neg_cat_dict['<300 to ATG'] + neg_cat_dict['<100 to ATG']
+    all_300_pos = pos_cat_dict['100:300 to ATG'] + pos_cat_dict['<100 to ATG']
+    all_300_neg = neg_cat_dict['100:300 to ATG'] + neg_cat_dict['<100 to ATG']
     all_300_total = all_300_pos + all_300_neg
-    row = pd.DataFrame([['all <300 to ATG',all_300_pos, all_300_neg, all_300_total]],
+    row = pd.DataFrame([['<300 to ATG',all_300_pos, all_300_neg, all_300_total]],
                        columns=['cat','pos_count','neg_count','total'])
     cat_df = pd.concat((cat_df,row),ignore_index=True)
     
@@ -221,9 +221,9 @@ def get_intergenic_category(row,dist_array):
     elif pos_dist <= 100:
         cat = "<100 to ATG"
     elif pos_dist <=300:
-        cat = "<300 to ATG"
+        cat = "100:300 to ATG"
     else:
-        cat = "intergenic far from ATG"
+        cat = "intergenic"
         
     return cat
     
@@ -257,13 +257,13 @@ def add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array):
         raise ValueError(f"Unknown genome direction {genome_version}. This function is for whole genome motif searches (genome_fwd or genome_rev)")
 
         
-
+genome_cat_order = ['in gene','intergenic','100:300 to ATG','<100 to ATG']
 def genome_category_violin(df,threshold=0):
     fig = plt.figure(figsize=(10,10))
     sns.violinplot(data=df[df['score']>=threshold],
                    x='motif_loc',
                    y='score',
-                   order = ['in gene','intergenic far from ATG','<300 to ATG','<100 to ATG']
+                   order = genome_cat_order
                   )
     plt.xlabel("Genome category")
     plt.ylabel("PSSM match score")
@@ -276,7 +276,7 @@ def genome_category_swarm(df,threshold=0):
     sns.swarmplot(data=df[df['score']>threshold], 
                   x='motif_loc',
                   y='score',
-                  order = ['in gene','intergenic far from ATG','<300 to ATG','<100 to ATG'],
+                  order = genome_cat_order,
                   hue='spacer')
     plt.xlabel("Genome category")
     plt.ylabel("PSSM match score")
@@ -284,19 +284,21 @@ def genome_category_swarm(df,threshold=0):
     plt.show()
     
 def genome_category_normed_bar(df,threshold=0):
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(5,7))
     sns.barplot(data=df, x='cat',
                 y='match_perc',
-                order = ['in gene','intergenic far from ATG','<300 to ATG','<100 to ATG','all <300 to ATG']
+                order = genome_cat_order
                )
-    plt.xticks(rotation=20)
-    plt.xlabel("Genome category")
-    plt.ylabel("PSSM match count percentage")
-    plt.title(f"Percentage of positions in each genome category containing a PSSM match (threshold >{threshold})")
+    plt.xticks(rotation=90,fontsize=14)
+    plt.xlabel("Genome category",fontsize=14)
+    plt.ylabel("Fraction of genome positions with PSSM match",fontsize=14)
+    plt.title(f"Enrichment of PSSM matches \nin each genome category \n(PSSM log odds >{threshold:0.2f})",fontsize=20)
     plt.show()
     
 
+
 def analyze_motif_matches_across_genome(df,
+                                        baseline_cat_df,
                                         pos_dist_array,
                                         pos_nearest_feat_array,
                                         neg_dist_array,
@@ -305,16 +307,19 @@ def analyze_motif_matches_across_genome(df,
                                         thresh1=8,
                                         thresh2=12):
     '''
-    Given a df of pssm motif matche scores across the entire genome, analyze the frequency of these
-    matches in various positions relative to genes. Are the matches mostly in genes? in promoter
-    regions? Intergenic but far away from promoter regions? 
+    Given a df of pssm motif match scores across the entire genome, 
+    analyze the frequency of these matches in various positions relative
+    to genes. Are the matches mostly in genes? in promoter regions? 
+    Intergenic but far away from promoter regions? 
     '''
     
     # add genome pos category to each match in the df
     print("Adding categories to pssm matches...")
     df['motif_loc'] = df.apply(lambda row: add_intergenic_category_column(row, pos_dist_array, neg_dist_array),axis=1)
+    print('done motifs...')
     df['nearest_feat'] = df.apply(lambda row: add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array),axis=1)
-    
+    print('done near feats...')
+
     if make_swarm_violin:
         # make a violinplot
         print("Plotting violin and swarm...")
@@ -328,36 +333,21 @@ def analyze_motif_matches_across_genome(df,
     # now normalize the match counts by the number of positions in the genome that
     # fall into each category
     print("Normalizing pssm match counts")
+
+    # make a dictionary of each genome category and the number of matches
     pssm_cat_match_counts = dict(df['motif_loc'].value_counts())
-    pssm_cat_match_counts['all <300 to ATG'] = pssm_cat_match_counts['<300 to ATG'] + \
+    pssm_cat_match_counts['<300 to ATG'] = pssm_cat_match_counts['100:300 to ATG'] + \
                                                pssm_cat_match_counts['<100 to ATG']
 
-    # make category df for all positions in the gneome to get baseline counts
-    # of each category
-    cat_df = build_genome_position_category_df(pos_dist_array, neg_dist_array)
+    
+    cat_df = baseline_cat_df.copy(deep=True)
     
     # add pssm match count to this df
     cat_df['pssm_match_count'] = cat_df['cat'].apply(lambda x: pssm_cat_match_counts[x])
-    
-    # divide match count by total
+    # divide match count by total counts of each category
     cat_df['match_perc'] = cat_df.apply(lambda row: row['pssm_match_count']/row['total'], axis=1)
 
-    # plot
-    genome_category_normed_bar(cat_df)
-    
-    
-    # make same plot but filtered to only high scoring PSSM matches
-    print("Normalizing filtered match counts...")
-    pssm_cat_match_counts_filt = dict(df[df['score']>thresh2]['motif_loc'].value_counts())
-    pssm_cat_match_counts_filt['all <300 to ATG'] = pssm_cat_match_counts_filt['<300 to ATG'] + \
-                                                    pssm_cat_match_counts_filt['<100 to ATG']
-
-    cat_df_filt = build_genome_position_category_df(pos_dist_array, neg_dist_array)
-    cat_df_filt['pssm_match_count'] = cat_df_filt['cat'].apply(lambda x: pssm_cat_match_counts_filt[x])
-    cat_df_filt['match_perc'] = cat_df_filt.apply(lambda row: row['pssm_match_count']/row['total'], axis=1)
-    genome_category_normed_bar(cat_df_filt,threshold=thresh2)
-    
-    print("done!")
+    return cat_df
 
 
 def make_spaced_motif(m1,m2,spacer):
@@ -431,7 +421,7 @@ def find_and_score_motifs_in_seqs(motif_dict,seqs,truth_dict):
     return df
 
 
-def score_predictions_to_motif(motif_blocks, m1, m2,nperc):
+def score_predictions_to_motif(motif_blocks, m1, m2):
     '''
     Given a 2 block consensus motif (m1 and m2), as the predicted sequences 
     that comprise the consensus motifs, score each sequence against the 
@@ -447,10 +437,10 @@ def score_predictions_to_motif(motif_blocks, m1, m2,nperc):
         hex2_score = m2.pssm.calculate(hex2)
         total_score = hex1_score + hex2_score
 
-        row = [nperc,loc,desc,seq,hex1,hex1_score,hex2,hex2_score,total_score]
+        row = [loc,desc,seq,hex1,hex1_score,hex2,hex2_score,total_score]
         hex_score_data.append(row)
         
-    hex_score_df = pd.DataFrame(hex_score_data,columns=['nperc','locus_tag','desc','motif_block','hex1','hex1_score','hex2','hex2_score','total_score'])
+    hex_score_df = pd.DataFrame(hex_score_data,columns=['locus_tag','desc','motif_block','hex1','hex1_score','hex2','hex2_score','total_score'])
 
     return hex_score_df
 
