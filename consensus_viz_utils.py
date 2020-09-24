@@ -3,7 +3,11 @@ import logomaker
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import random
+random.seed(100)
 import seaborn as sns
+import swifter
+
 
 import Bio
 from Bio import motifs
@@ -64,7 +68,7 @@ def view_motif(m1,m2):
     plt.show()
 
 
-def build_2Bmotif_from_selection_file(filename, verbose=False):
+def build_2Bmotif_from_selection_file(filename, randomize=False,verbose=False):
     '''
     Given a SELECTION.fa, build a 2 block consensus motif from the 
     first 6 and last 6 bases of each input sequence
@@ -74,8 +78,40 @@ def build_2Bmotif_from_selection_file(filename, verbose=False):
     # collect first 6 and last 6 bases from each predicted promoter
     block1_instances = [Seq(x[:6]) for (_,_,x) in proms]
     block2_instances = [Seq(x[-6:]) for (_,_,x) in proms]
+    # if we are randomizing the sequences to make a random motif
+    if randomize:
+        # establish a new random ordering of indicies (some may be repeated or left out)
+        new_order = [random.randint(0,5) for x in range(6)]
+        # remap letters to different bases. This tries to maintain a "strong signal" 
+        # exists (just shuffling all the letters to different positions independently
+        # would make the information content just go flat). Instead, this just changes 
+        # which letters have stronger or weaker signal, but the signal strength of the 
+        # original consensus remains.... I think.
+        remap = {
+            'A':'T',
+            'C':'A',
+            'G':'C',
+            'T':'G',
+        }
+        # collect randomized versions of the hexamers
+        rand_block1_instances = []
+        rand_block2_instances = []
+        for i in range(len(block1_instances)):
+            seq1 = str(block1_instances[i])
+            seq1 = ''.join([remap[x] for x in seq1])
+            seq1 = ''.join([seq1[x] for x in new_order])
+            rand_block1_instances.append(Seq(seq1))
 
-    # creat BioPython motif objects
+            seq2 = str(block2_instances[i])
+            seq2 = ''.join([remap[x] for x in seq2])
+            seq2 = ''.join([seq2[x] for x in new_order])
+            rand_block2_instances.append(Seq(seq2))
+
+        block1_instances = rand_block1_instances
+        block2_instances = rand_block2_instances
+
+
+    # create BioPython motif objects
     m1 = motifs.create(block1_instances)
     m2 = motifs.create(block2_instances)
 
@@ -257,7 +293,8 @@ def add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array):
         raise ValueError(f"Unknown genome direction {genome_version}. This function is for whole genome motif searches (genome_fwd or genome_rev)")
 
         
-genome_cat_order = ['in gene','intergenic','100:300 to ATG','<100 to ATG']
+genome_categories = ['in gene','intergenic','100:300 to ATG','<100 to ATG']
+genome_cat_order = ['in gene','intergenic','<300 to ATG','<100 to ATG']
 def genome_category_violin(df,threshold=0):
     fig = plt.figure(figsize=(10,10))
     sns.violinplot(data=df[df['score']>=threshold],
@@ -295,30 +332,22 @@ def genome_category_normed_bar(df,threshold=0):
     plt.title(f"Enrichment of PSSM matches \nin each genome category \n(PSSM log odds >{threshold:0.2f})",fontsize=20)
     plt.show()
     
-
-
-def analyze_motif_matches_across_genome(df,
-                                        baseline_cat_df,
+def add_genome_category_to_pssm_matches(df,
                                         pos_dist_array,
                                         pos_nearest_feat_array,
                                         neg_dist_array,
                                         neg_nearest_feat_array,
-                                        make_swarm_violin=False,
-                                        thresh1=8,
-                                        thresh2=12):
+                                        make_swarm_violin=False):
+
     '''
     Given a df of pssm motif match scores across the entire genome, 
-    analyze the frequency of these matches in various positions relative
-    to genes. Are the matches mostly in genes? in promoter regions? 
-    Intergenic but far away from promoter regions? 
+    Add the genome category and teh nearest feature to the dataframe 
+    of pssm matches 
     '''
-    
     # add genome pos category to each match in the df
     print("Adding categories to pssm matches...")
-    df['motif_loc'] = df.apply(lambda row: add_intergenic_category_column(row, pos_dist_array, neg_dist_array),axis=1)
-    print('done motifs...')
-    df['nearest_feat'] = df.apply(lambda row: add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array),axis=1)
-    print('done near feats...')
+    df['motif_loc'] = df.swifter.apply(lambda row: add_intergenic_category_column(row, pos_dist_array, neg_dist_array),axis=1)
+    df['nearest_feat'] = df.swifter.apply(lambda row: add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array),axis=1)
 
     if make_swarm_violin:
         # make a violinplot
@@ -328,14 +357,31 @@ def analyze_motif_matches_across_genome(df,
 
         # make a swarm plot above threshold
         genome_category_swarm(df,threshold=thresh2)
+
+    return df 
+
+def analyze_motif_matches_across_genome(df,
+                                        baseline_cat_df):
+    '''
+    Given a df of pssm motif match scores across the entire genome, 
+    analyze the frequency of these matches in various positions relative
+    to genes. Are the matches mostly in genes? in promoter regions? 
+    Intergenic but far away from promoter regions? 
+    '''
     
-    
+
     # now normalize the match counts by the number of positions in the genome that
     # fall into each category
     print("Normalizing pssm match counts")
 
-    # make a dictionary of each genome category and the number of matches
-    pssm_cat_match_counts = dict(df['motif_loc'].value_counts())
+    # chekc if df is empty
+    if df.empty:
+        pssm_cat_match_counts = dict([(x,0) for x in genome_categories])
+    else:
+        # make a dictionary of each genome category and the number of matches
+        pssm_cat_match_counts = dict(df['motif_loc'].value_counts())
+    
+    # combine <100 and 100:300 to be all <300
     pssm_cat_match_counts['<300 to ATG'] = pssm_cat_match_counts['100:300 to ATG'] + \
                                                pssm_cat_match_counts['<100 to ATG']
 
@@ -443,6 +489,9 @@ def score_predictions_to_motif(motif_blocks, m1, m2):
     hex_score_df = pd.DataFrame(hex_score_data,columns=['locus_tag','desc','motif_block','hex1','hex1_score','hex2','hex2_score','total_score'])
 
     return hex_score_df
+
+
+
 
 
 
