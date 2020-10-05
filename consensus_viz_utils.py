@@ -30,7 +30,7 @@ def load_promoter_seqs(filename):
                 full_header = line.strip()[1:].strip()
                 locus_tag = full_header.split('|')[0]
             else:
-                seq = line.strip()
+                seq = line.strip().upper()
                 proms.append((locus_tag,full_header,seq))
                 
     return proms
@@ -375,15 +375,23 @@ def analyze_motif_matches_across_genome(df,
     print("Normalizing pssm match counts")
 
     # chekc if df is empty
-    if df.empty:
-        pssm_cat_match_counts = dict([(x,0) for x in genome_categories])
-    else:
-        # make a dictionary of each genome category and the number of matches
-        pssm_cat_match_counts = dict(df['motif_loc'].value_counts())
+    # if df.empty:
+    #     pssm_cat_match_counts = dict([(x,0) for x in genome_categories])
+    # else:
+        
+    # make a dictionary of each genome category and the number of matches
+    pssm_cat_match_counts = dict(df['motif_loc'].value_counts())
+    # catch any empty categories
+    for cat in genome_categories:
+        if cat not in pssm_cat_match_counts:
+            pssm_cat_match_counts[cat] = 0
     
     # combine <100 and 100:300 to be all <300
-    pssm_cat_match_counts['<300 to ATG'] = pssm_cat_match_counts['100:300 to ATG'] + \
-                                               pssm_cat_match_counts['<100 to ATG']
+    # c100 = 0 if '<100 to ATG' not in pssm_cat_match_counts else pssm_cat_match_counts['<100 to ATG']
+    # c100_300 = 0 if '100:300 to ATG' not in pssm_cat_match_counts else pssm_cat_match_counts['100:300 to ATG']
+    
+    pssm_cat_match_counts['<300 to ATG'] = pssm_cat_match_counts['<100 to ATG'] + \
+                                           pssm_cat_match_counts['100:300 to ATG']
 
     
     cat_df = baseline_cat_df.copy(deep=True)
