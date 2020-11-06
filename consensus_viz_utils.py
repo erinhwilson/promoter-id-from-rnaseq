@@ -320,15 +320,33 @@ def genome_category_swarm(df,threshold=0):
     plt.title(f"Distribution of PSSM match scores (>={threshold})")
     plt.show()
     
-def genome_category_normed_bar(df,threshold=0):
-    plt.figure(figsize=(5,7))
+def genome_category_normed_bar_v(df,threshold=0,sci=False):
+    plt.figure(figsize=(4,7))
     sns.barplot(data=df, x='cat',
                 y='match_perc',
                 order = genome_cat_order
                )
+    plt.yticks(fontsize=14)
     plt.xticks(rotation=90,fontsize=14)
+    if sci:
+        plt.ticklabel_format(axis="y", style="sci", scilimits=(0,0))
     plt.xlabel("Genome category",fontsize=14)
     plt.ylabel("Fraction of genome positions with PSSM match",fontsize=14)
+    plt.title(f"Enrichment of PSSM matches \nin each genome category \n(PSSM log odds >{threshold:0.2f})",fontsize=20)
+    plt.show()
+
+def genome_category_normed_bar_h(df,threshold=0,sci=False):
+    plt.figure(figsize=(8,4))
+    sns.barplot(data=df, y='cat',
+                x='match_perc',
+                order = genome_cat_order
+               )
+    plt.yticks(fontsize=14)
+    plt.xticks(fontsize=14)
+    if sci:
+        plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
+    plt.ylabel("Genome category",fontsize=14)
+    plt.xlabel("Fraction of genome positions with PSSM match",fontsize=14)
     plt.title(f"Enrichment of PSSM matches \nin each genome category \n(PSSM log odds >{threshold:0.2f})",fontsize=20)
     plt.show()
     
