@@ -540,10 +540,10 @@ def compile_all_biop_results(biop_files, promoter_file,top_motif_only=False, ver
                             if verbose:
                                 print(f"{sm_seq} {sm_obj.quick_summ()} (biop {biop_file}, motif {motif_id}, inst {instance})")
 
-                            row = [name,sm_seq,sm_obj.quick_summ(),biop_file,motif_id,instance]
+                            row = [name,sm_seq,sm_obj.block1pos,sm_obj.quick_summ(),biop_file,motif_id,instance]
                             rows.append(row)
     
-    df = pd.DataFrame(rows, columns=['seq_name','seq_block','block_summ','biop_file','motif_id','instance'])
+    df = pd.DataFrame(rows, columns=['seq_name','seq_block','pos','block_summ','biop_file','motif_id','instance'])
     return df
 
 
@@ -591,6 +591,7 @@ def select_motifs_with_most_agreement(df,
             block_df = dfgg.get_group(block_summ)
             assert(len(block_df['seq_block'].unique())==1)
             seq_block = block_df['seq_block'].values[0]
+            pos = block_df['pos'].values[0]
             agreements = [f"{bio_desc}_MOTIF-{motif_id}-{inst}" for (bio_desc,motif_id,inst) in block_df[['biop_file','motif_id','instance']].values]
             
             # if this the block with the most agreement, add it to the selection fasta
@@ -601,7 +602,7 @@ def select_motifs_with_most_agreement(df,
                 selection_rows.append(f"{seq_block}\n")
                 
             # regardless of whether its the best match, write out to the summary file
-            summary_rows.append(f"{seq_name}\t{count}\t{seq_block}\t{block_summ}\t{agreements}\n")
+            summary_rows.append(f"{seq_name}\t{count}\t{seq_block}\t{pos}\t{block_summ}\t{agreements}\n")
     
     # write out the selection and summary
     with open(seq_selection_out,'w') as f:
@@ -609,7 +610,7 @@ def select_motifs_with_most_agreement(df,
             f.write(row)
 
     with open(summary_out,'w') as f:
-        f.write(f"seq_name\tblock_count\tseq_block\tblock_summ\tagreements\n")
+        f.write(f"seq_name\tblock_count\tseq_block\tpos\tblock_summ\tagreements\n")
         for row in summary_rows:
             f.write(row)
             
@@ -633,16 +634,16 @@ def write_margin_of_victory_results(top_k, summary_outf, margin_of_victory_outf)
         top_df = df.sort_values('block_count', ascending=False).head(top_k+1)
         
         for i in range(top_k):
-            seq, block_summ, block_count = top_df[['seq_block', 'block_summ', 'block_count']].values[i]
+            seq, block_summ, block_count,pos = top_df[['seq_block', 'block_summ', 'block_count','pos']].values[i]
             next_block_count = top_df['block_count'].values[i+1]
             # margin of victory (difference between current and next most popular motif)
             mov = block_count - next_block_count
 
             # add row to data
-            row = [loc,seq,mov,block_summ, block_count]
+            row = [loc,seq,pos,mov,block_summ, block_count]
             rows.append(row)
             
-    mov_df = pd.DataFrame(rows, columns=['loc','sequence','margin_of_victory','motif_summ','raw_votes'])
+    mov_df = pd.DataFrame(rows, columns=['loc','sequence','pos','margin_of_victory','motif_summ','raw_votes'])
     mov_df.to_csv(margin_of_victory_outf, sep='\t',index=False)
 
     print("Margin of victory:",margin_of_victory_outf)
