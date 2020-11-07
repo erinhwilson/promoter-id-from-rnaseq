@@ -14,6 +14,12 @@ And 3 main outputs:
 
 <img src="comp_framework_diagram.jpg" alt="Computational Framework" width="600"/>
 
+## Tutorial Notebooks
+Jupyter notebook tutorials are provided to help users better understand various stages of the workflow and explore the outputs.
+1. [Exploration of TPM data across conditions](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
+1. [Inspection of BioProspector output files](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
+1. [Consensus motif analysis](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
+
 ## Workflow Instructions
 
 ### 0.) Obtain RNA-seq data matrix
@@ -109,4 +115,4 @@ Inputs:
 
 
 ## Validation
-TODO
+Computational validation of the BioProspector outputs is carried out in the [Consensus Motif Analysis](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb) Jupyter Notebook tutorial, which relies on functions from `consensus_viz_utils.py`.
