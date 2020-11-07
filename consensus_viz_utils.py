@@ -364,8 +364,10 @@ def add_genome_category_to_pssm_matches(df,
     '''
     # add genome pos category to each match in the df
     print("Adding categories to pssm matches...")
-    df['motif_loc'] = df.swifter.apply(lambda row: add_intergenic_category_column(row, pos_dist_array, neg_dist_array),axis=1)
-    df['nearest_feat'] = df.swifter.apply(lambda row: add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array),axis=1)
+    # df['motif_loc'] = df.swifter.apply(lambda row: add_intergenic_category_column(row, pos_dist_array, neg_dist_array),axis=1)
+    # df['nearest_feat'] = df.swifter.apply(lambda row: add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array),axis=1)
+    df['motif_loc'] = df.apply(lambda row: add_intergenic_category_column(row, pos_dist_array, neg_dist_array),axis=1)
+    df['nearest_feat'] = df.apply(lambda row: add_nearest_feat_column(row,pos_nearest_feat_array,neg_nearest_feat_array),axis=1)
 
     if make_swarm_violin:
         # make a violinplot
