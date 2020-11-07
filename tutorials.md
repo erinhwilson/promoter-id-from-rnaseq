@@ -2,4 +2,4 @@
 
 Can I link to an html file?
 
-[link](/docs/tpm-data-exploration.html)
+[link](analyze_consensus_motif.html)
