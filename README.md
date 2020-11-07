@@ -16,9 +16,9 @@ And 3 main outputs:
 
 ## Tutorial Notebooks
 Jupyter notebook tutorials are provided to help users better understand various stages of the workflow and explore the outputs.
-1. [Exploration of TPM data across conditions](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/tpm-data-exploration.html) ([ipynb])(https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
-1. [Inspection of BioProspector output files](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/inspect_BioProspector_results.html) ([ipynb])(https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
-1. [Consensus motif analysis](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/analyze_consensus_motif.html) ([ipynb])(https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
+1. [Exploration of TPM data across conditions](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
+1. [Inspection of BioProspector output files](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
+1. [Consensus motif analysis](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
 
 ## Workflow Instructions
 
