@@ -4,6 +4,12 @@ You can use the [editor on GitHub](https://github.com/erinhwilson/promoter-id-fr
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
+## Tutorials
+Try out the following tutorials:
+1. [Explore TPM data](tutorials/tpm-data-exploration.html)
+1. [Inspect BioProspector output](tutorials/inspect_BioProspector_results.html)
+1. [Analyze Consensus Motif][tutorials/analyze_consensus_motif.html)
+
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
