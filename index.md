@@ -1,7 +1,7 @@
 # Welcome!
 Here you will find further details and resources for exploring data and analysis related to the "A computational framework for indentifying promoter sequences in non-model organisms using RNA-seq datasets" (paper currently in preparation). The [git repo](https://github.com/erinhwilson/promoter-id-from-rnaseq/) contains all instructions for running the code but below you will find static html tutorials as well as links to their corresponding Jupyter Notebooks. We've also provided a data visualization gallery of interactive plots that we hope will enhance a reader's understanding of the data.
 
-<img src="img/framework_overview.jpg" alt="Computational Framework" width="800"/>
+<img src="img/framework_overview.png" alt="Computational Framework" width="800"/>
 
 ## Tutorials
 See the following Jupyter Notebooks for tutorials on how various pieces of analysis were carried out:
