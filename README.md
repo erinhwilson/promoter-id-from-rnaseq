@@ -1,8 +1,16 @@
 # promoter-id-from-rnaseq
-A computational framework to identify promoter sequences from RNA-seq datasets
+This repository contains a framework, data, and analysis associated with the paper "A computational framework to identify promoter sequences from RNA-seq datasets." There is also a [**project page**](https://erinhwilson.github.io/promoter-id-from-rnaseq/) with data analysis tutorials and an interactive visualization gallery. 
+
+_This publication is currently in preparation. A link to the paper will be provided upon publication._ 
+
+## Tutorial Notebooks
+Jupyter notebook tutorials are provided in `/tutorials` to help users better understand various stages of the workflow and explore relevant outputs.
+1. [Exploration of TPM data across conditions](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
+1. [Inspection of BioProspector output files](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
+1. [Consensus motif analysis](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
 
 ## Overview
-This framework contains 3 main steps:
+This computational framework contains 3 main steps:
 1. Identify a set of strongly expressed loci from RNA-seq data
 1. Extract sequence regions upstream of the set of loci from Step 1
 1. Search upstream regions for promoter motif structures and make predictions for the -35/-10 sequence
@@ -13,12 +21,6 @@ And 3 main outputs:
 1. A tab-delimitied file summarzing all possible promoter predictions for each locus
 
 <img src="comp_framework_diagram.jpg" alt="Computational Framework" width="600"/>
-
-## Tutorial Notebooks
-Jupyter notebook tutorials are provided to help users better understand various stages of the workflow and explore the outputs.
-1. [Exploration of TPM data across conditions](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
-1. [Inspection of BioProspector output files](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
-1. [Consensus motif analysis](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
 
 ## Workflow Instructions
 
