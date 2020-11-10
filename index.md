@@ -9,24 +9,35 @@ See the following Jupyter Notebooks for tutorials on how various pieces of analy
 1. [Inspection of BioProspector output files](tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
 1. [Consensus motif analysis](tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
 
-### Markdown
+## Interactive Visualizations
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Choose an image in the gallery to explore an interactive version of the plot.
+<div>
+  <!-- <a href="viz/tradeoff.html" title="Go to interactive visualization">
+    <figure style="text-align:center">
+    <img src="img/tradeoff.png" alt="Top Gene Set Tradeoff" width="200"/>
+    <figcaption >Top Gene Set Tradeoff</figcaption>
+    </figure>
+  </a> -->
+    <table><tr>
+        <td>
+            <a href="viz/tradeoff.html" title="Go to interactive visualization" display='inline'>
+                <img src="img/tradeoff.png" alt="Top Gene Set Tradeoff" width="300"/>
+                <p style="text-align: center">Top Gene Set Tradeoff</p>
+            </a>
+        </td>
+        <td>
+            <a href="viz/pcoords_top1.html" title="Go to interactive visualization" display='inline'>
+                <img src="img/pcoords_top1.png" alt="Top 1% Expression" width="300"/>
+                <p style="text-align: center">Top 1% Expression</p>
+            </a>
+        </td>
+        <td>
+            <a href="viz/pcoords_top3.html" title="Go to interactive visualization" display='inline'>
+                <img src="img/pcoords_top3.png" alt="Top 3% Expression" width="300"/>
+                <p style="text-align: center">Top 3% Expression</p>
+            </a>
+        </td>
+    </tr></table>
+</div>
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
