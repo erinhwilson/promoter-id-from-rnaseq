@@ -5,9 +5,9 @@ Here you will find further details and resources for exploring data and analysis
 
 ## Tutorials
 See the following Jupyter Notebooks for tutorials on how various pieces of analysis were carried out:
-1. [Exploration of TPM data across conditions](tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
-1. [Inspection of BioProspector output files](tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
-1. [Consensus motif analysis](tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
+1. [Exploration of TPM data across conditions](tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/tpm-data-exploration.ipynb)
+1. [Inspection of BioProspector output files](tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/inspect_BioProspector_results.ipynb)
+1. [Consensus motif analysis](tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/analyze_consensus_motif.ipynb)
 
 ## Interactive Visualizations
 
