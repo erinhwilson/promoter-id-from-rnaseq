@@ -1,5 +1,5 @@
 # Welcome!
-Here you will find further details and resources for exploring data and analysis related to the "A computational framework for indentifying promoter sequences in non-model organisms using RNA-seq datasets" (paper currently in preparation). The [git repo](https://github.com/erinhwilson/promoter-id-from-rnaseq/) contains all instructions for running the code but below you will find static html tutorials as well as links to their corresponding Jupyter Notebooks. We've also provided a data visualization gallery of interactive plots that we hope will enhance a reader's understanding of the data.
+Here you will find further details and resources for exploring data and analysis related to the paper **"A computational framework for indentifying promoter sequences in non-model organisms using RNA-seq datasets"** (paper currently in preparation). The [git repo](https://github.com/erinhwilson/promoter-id-from-rnaseq/) contains all instructions for running the code but below you will find static html tutorials as well as links to their corresponding Jupyter Notebooks. We've also provided a data visualization gallery of interactive plots that we hope will facilitate further exploration and understanding of _M. buryatense_ expression data.
 
 <img src="img/framework_overview.png" alt="Computational Framework" width="800"/>
 
@@ -11,7 +11,7 @@ See the following Jupyter Notebooks for tutorials on how various pieces of analy
 
 ## Interactive Visualizations
 
-Choose an image in the gallery to explore an interactive version of the plot.
+Choose an image in the gallery to explore explore data interactively.
 <div>
   <!-- <a href="viz/tradeoff.html" title="Go to interactive visualization">
     <figure style="text-align:center">
