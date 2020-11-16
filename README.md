@@ -21,7 +21,7 @@ And 3 main outputs:
 1. A tab-delimited file summarizing the top 3 best promoters for each locus, with Margin of Victory scores to indicate the robustness of each selections (small margin of victory indicates that there were several close predictions worth reviewing)
 1. A tab-delimitied file summarzing all possible promoter predictions for each locus
 
-<img src="comp_framework_diagram.jpg" alt="Computational Framework" width="600"/>
+<img src="docs/comp_framework_diagram.jpg" alt="Computational Framework" width="600"/>
 
 ## Workflow Instructions
 
