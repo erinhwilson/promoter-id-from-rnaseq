@@ -18,7 +18,7 @@ This computational framework contains 3 main steps:
 
 And 3 main outputs:
 1. A fasta file of the exact -35 through -10 sequence (hexamer, spacer, hexamer) of the best promoter prediction for each locus
-1. A tab-delimited file summarizing the top 3 best promoters for each locus, with Margin of Victory scores to indicate the robustness of each selections (small margin of victory indicates that there were several close predictions worth reviewing)
+1. A tab-delimited file summarizing the top _k_ best promoters for each locus, with Margin of Victory scores to indicate the robustness of each prediction
 1. A tab-delimitied file summarzing all possible promoter predictions for each locus
 
 <img src="docs/comp_framework_diagram.jpg" alt="Computational Framework" width="600"/>
@@ -38,10 +38,10 @@ Inputs:
 1. top `n%` threshold
     * pick a threshold for considering loci to be in the top set: only loci that are in the top `n%` in _all_ experimental conditions will be selected
 1. operon minimum distance
-    * many prokaryotic loci exist in operons that share promoters. For example, if genes A, B and C are in an operon and all end up in the highly expressed set, we only really care to find the promoter signal in front of the first gene in the operon (the "upstream region of the other genes will just be the coding sequence of its operon-mates).
+    * many prokaryotic loci exist in operons that share promoters. For example, if genes A, B and C are in an operon and all end up in the highly expressed set, we only really care to find the promoter signal in front of the first gene in the operon (the "upstream region" of the other genes will just be the coding sequence of its operon-mates).
     * If this organism does not yet have a list of operons explicitly annotated, this script does a rough estimation: the minimum distance argument specifies that any locus which appears on the same strand and within `min_distance` of another locus will be flagged as "possibly in an operon" and later excluded from the list of top loci in which to search upstream regions for promoter signals. Here it is just flagged with a boolean tag. 
     * Increasing  `min_distance` will lump more genes into possible operons while decreasing `min_dist` will be looser and not ignore as many loci. 
-        * A notebook showing some operon analysis is available [here](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/operon_distance_exploration.ipynb)
+        * A notebook showing some operon analysis and how we chose a default value is available [here](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/operon_distance_exploration.ipynb)
 1. sample2condition mapping file. 
     * The columns of the TPM data matrix should reflect unique sample names (distinct RNA-seq experiments). Some of these samples may be replicates, or just separate experiments that fall under the same experimental category (e.g., "Low Methane", or "High Copper" etc). The experimental conditions can be called anything, but the sample2condition file is the formal way to specify which sample belongs to which category.
 
@@ -69,16 +69,16 @@ Inputs:
 `python get_top_gene_set.py data/extract_TPM_counts.tsv locus_tag 3 120 data/sample2condition.txt data/5GB1c_sequence.gb out_dir -c config/conditions_to_include.txt -s config/samples_to_include.txt`
 
 ### 2.) Extract upstream sequence regions (`extract_upstream_regions.py`)
-With a top set of loci identified in `get_top_gene_set.py`, the next script will go to the genbank file and actually extract the DNA sequence windows upstream of these top loci. By default he script will extract a 300bp window immediately upstream of the feature start coordinate. 
+With a top set of loci identified in `get_top_gene_set.py`, the next script will go to the genbank file and actually extract the DNA sequence windows upstream of these top loci. By default the script will extract a 300bp window immediately upstream of the feature start coordinate. 
 
-However, this script is conscious of other nearby annotations which may be within 300bp, and by default, will truncate the window extracted so as not to include partial coding sequences of other features. But on the other hand, some sequences are very close together (e.g., two divergently expressed genes' whose start coordinates are within 10 bp), so at a minimum, we will extract 20bp upstream, even if it overlaps with another feature. [TODO add images depecting these scenarios]
+However, this script is conscious of other nearby annotations which may be within 300bp, and by default, will truncate the window extracted so as not to include partial coding sequences of other features. But on the other hand, some sequences are very close together (e.g., two divergently expressed genes' whose start coordinates are within 10 bp), so at a minimum, we will extract 20bp upstream, even if it overlaps with another feature.
 
 Inputs:
 1. List of locus ids
-    * Output from `get_top_gene_set.py`: two-column tab delimited file. First column is the locus id. Second column is a boolean if the locus is "possibly in an operon" as determined by the `min_dist` param in the `get_top_gene_set.py` script.
+    * Output from `get_top_gene_set.py`: two-column tab delimited file. First column is the locus id. Second column is a boolean if the locus is "possibly in an operon" as determined by the `min_dist` parameter in the `get_top_gene_set.py` script.
 1. genbank annotation and sequence file
 1. output directory
-    * directory where fasta file of upstream regions of each of the top loci will be stored. Note: loci flagged as "possibly in an operon" will be excluded from this fasta file (as specified by column 2 of the "list of locus ids" input file.
+    * directory where fasta file of upstream regions of each of the top loci will be stored. _Note: loci flagged as "possibly in an operon" will be excluded from this fasta file (as specified by column 2 of the "list of locus ids" input file._
 1. (Optional) window size (default: 300bp)
     * size of the upstream window to extract 
 1. (Optional) min upstream distance (default: 20bp)
@@ -90,18 +90,18 @@ Inputs:
 `python extract_upstream_regions.py out_dir/loci_in_top_3perc.txt data/5GB1c_sequence.gb out_dir`
 
 ### 3.) Search upstream regions for patterns to make promoter predictions (`predict_promoter_signal.py`)
-With the upstream regions for a set of highly expressed loci in hand, we are next interested in searching these sequences for a common pattern. Specifically, we are looking for sigma-70 like promoter patterns which influence strong transcription initiation in this top set of loci. Here, we use a motif finding tool called BioProspector which can accept as input a particular motif structure (e.g., a hexamer, followed by 15-18 bp of spacer, follwed by another hexamer) and search sequence for that structure. Without sepcific instructions for what precise sequence to find, BioProspector will simply use that structure to search for common patterns across all the upstream regions and make a prediction for what a consensus motif may be. (More details about BioProspector can be found [here](https://psb.stanford.edu/psb-online/proceedings/psb01/liu.pdf)). 
+With the upstream regions for a set of highly expressed loci in hand, we are next interested in searching these sequences for a common pattern. Specifically, we are looking for sigma-70 like promoter patterns which influence strong transcription initiation in this top set of loci. Here, we use a motif finding tool called BioProspector which can accept as input a particular motif structure (e.g., a hexamer, followed by 15-18 bp of spacer, followed by another hexamer) and search sequences for that structure. Without sepcific instructions for what precise sequence to find, BioProspector will simply use that structure to search for common patterns across all the upstream regions and make a prediction for what a consensus motif may be. (More details about BioProspector can be found [here](https://psb.stanford.edu/psb-online/proceedings/psb01/liu.pdf)). 
 
-1 run of BioProspector will yield 5 consensus motif predictions and report the *location* in each input sequence for where that consensus motif was found. Since BioProspector's search algorithm invovles some randomness, we run it `n` times and parse the 5 consensus motif predictions out of all `n` runs. The locations of sequence matches from all of these 5 x `n` predictions are used as  "votes": how many times was each match location (aka, specific sequence segment at a specific upstream region coordinate) identified by any of the consensus motif predictions? The more votes a match location gets, the more likely we assume it is to actually be the true promoter for this locus (because BioProspector found it so frequently). 
+1 run of BioProspector will yield 5 consensus motif predictions and report the *location* in each input sequence for where that consensus motif was found. Since BioProspector's search algorithm involves some randomness, we run it `n` times and parse the 5 consensus motif predictions out of all `n` runs. The locations of sequence matches from all of these 5 x `n` predictions are used as  "votes": how many times was each match location (aka, specific subsequence at a specific upstream region coordinate) identified by any of the consensus motif predictions? The more votes a match location gets, the more likely we assume it is to actually be the true promoter for this locus (because BioProspector found it so frequently). 
 
-Sometimes the voting is very clear: 1 location for a given locus' upstream sequence recieves far and away the majority of the votes (high margin of victory). But sometimes it is less clear: there may be two or more sequences which receive a very similar amount of votes (small margin of victory), and thus there is more uncertainty surrounding which sequence is actually the promoter. 
+Sometimes the voting is very clear: 1 location for a given locus' upstream sequence recieves far and away the majority of the votes (high margin of victory). But sometimes it is less clear: there may be two or more sequences which receive a very similar amount of votes (small margin of victory), and thus there is more uncertainty surrounding which sequence is most likely to be the -35,-10 promoter. 
 
 To summarize the above: we run BioProspector `n` times (default: 200) and use it's predictions as votes for particular motifs identified in each locus. To fully communicate the results of this prediction script, we provide 3 outputs.
-1. SELECTION.fa
+1. `SELECTION.fa`
     * A fasta file of the top voted promoter sequence for each locus. The sequence starts exactly at the -35 hexamer, spans a variable spacer, and ends exactly at the end of the -10 hexamer. Thus, the first 6 and last 6 bases of the sequence are the sequences that match the consensus motif blocks identified by BioProspector.
-1. TOP_K_MOV.tsv
-    * The difference between a given match location and the next most-voted-for location is called the Margin of Victory. While SELECTION.fa only shows the absolute top voted sequence, some of these votes may be close calls. This file provides more detailed information about the top `k` match locations with most votes and the margin of victory by which they won. A researcher may wish to inspect the promoter calls with "low margin of victory" as there may be another equally likely promoter sequence than the one provided in the SELECTION.fa
-1. SUMMARY.tsv
+1. `TOP_K_MOV.tsv`
+    * The difference between a given match location and the next most-voted-for location is called the Margin of Victory. While SELECTION.fa only shows the absolute top voted sequence, some of these votes may be close calls. This file provides more detailed information about the top `k` match locations with most votes and the margin of victory by which they won. A researcher may wish to inspect the promoter calls with "low margin of victory" as there may be another equally likely promoter sequence than the one provided in the `SELECTION.fa`
+1. `SUMMARY.tsv`
     * A full summary of all the votes recorded across the `n` BioProspector runs. A researcher may wish to consult this if they want more details about vote patterns than just the top `k`.
 
 Inputs:
