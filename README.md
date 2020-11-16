@@ -8,6 +8,7 @@ Jupyter notebook tutorials are provided in `/tutorials` to help users better und
 1. [Exploration of TPM data across conditions](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
 1. [Inspection of BioProspector output files](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
 1. [Consensus motif analysis](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
+1. [Operon upstream distance exploration](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/operon_distance_exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/operon_distance_exploration.ipynb)
 
 ## Overview
 This computational framework contains 3 main steps:
@@ -40,6 +41,7 @@ Inputs:
     * many prokaryotic loci exist in operons that share promoters. For example, if genes A, B and C are in an operon and all end up in the highly expressed set, we only really care to find the promoter signal in front of the first gene in the operon (the "upstream region of the other genes will just be the coding sequence of its operon-mates).
     * If this organism does not yet have a list of operons explicitly annotated, this script does a rough estimation: the minimum distance argument specifies that any locus which appears on the same strand and within `min_distance` of another locus will be flagged as "possibly in an operon" and later excluded from the list of top loci in which to search upstream regions for promoter signals. Here it is just flagged with a boolean tag. 
     * Increasing  `min_distance` will lump more genes into possible operons while decreasing `min_dist` will be looser and not ignore as many loci. 
+        * A notebook showing some operon analysis is available [here](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/operon_distance_exploration.ipynb)
 1. sample2condition mapping file. 
     * The columns of the TPM data matrix should reflect unique sample names (distinct RNA-seq experiments). Some of these samples may be replicates, or just separate experiments that fall under the same experimental category (e.g., "Low Methane", or "High Copper" etc). The experimental conditions can be called anything, but the sample2condition file is the formal way to specify which sample belongs to which category.
 
