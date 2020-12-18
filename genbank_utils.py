@@ -124,6 +124,7 @@ def get_feat2meta_dict(genbank_path):
                 g = "" if 'gene' not in feature.qualifiers else feature.qualifiers['gene'][0]
                 prod = "" if 'product' not in feature.qualifiers else feature.qualifiers['product'][0]
                 t = feature.type
+                strand = feature.strand
 
                 # overrides
                 g = get_override_gene(lt,g)
@@ -132,7 +133,8 @@ def get_feat2meta_dict(genbank_path):
                 metadata = {
                     'gene_symbol':g,
                     'product':prod,
-                    'type':t
+                    'type':t,
+                    'strand':strand
                 }
 
                 feat_list.append((lt,metadata))
