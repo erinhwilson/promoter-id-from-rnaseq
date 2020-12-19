@@ -28,13 +28,13 @@ Choose an image in the gallery to explore explore data interactively.
             </a>
         </td>
         <td>
-            <a href="viz/pcoords_top1.html" title="Go to interactive visualization" display='inline'>
+            <a href="viz/multi_top1perc.html" title="Go to interactive visualization" display='inline'>
                 <img src="img/pcoords_top1.png" alt="Top 1% Expression" width="300"/>
                 <p style="text-align: center">Top 1% Expression</p>
             </a>
         </td>
         <td>
-            <a href="viz/pcoords_top3.html" title="Go to interactive visualization" display='inline'>
+            <a href="viz/multi_top3perc.html" title="Go to interactive visualization" display='inline'>
                 <img src="img/pcoords_top3.png" alt="Top 3% Expression" width="300"/>
                 <p style="text-align: center">Top 3% Expression</p>
             </a>
