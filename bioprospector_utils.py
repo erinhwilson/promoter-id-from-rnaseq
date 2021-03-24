@@ -632,12 +632,22 @@ def write_margin_of_victory_results(top_k, summary_outf, margin_of_victory_outf)
     for loc, df in sum_df.groupby('seq_name'):
         # get the top k voted motifs
         top_df = df.sort_values('block_count', ascending=False).head(top_k+1)
+        # if there were fewer than k results
+        if top_df.shape[0] < top_k+1:
+            print(f"WARNING: fewer than {top_k}+1 results for {loc}, only {top_df.shape[0]}")
         
-        for i in range(top_k):
+        for i in range(top_df.shape[0]): # topk
+            if i+1 > top_k: # skip 4th row if there is one
+                continue
+
             seq, block_summ, block_count,pos = top_df[['seq_block', 'block_summ', 'block_count','pos']].values[i]
-            next_block_count = top_df['block_count'].values[i+1]
-            # margin of victory (difference between current and next most popular motif)
-            mov = block_count - next_block_count
+            # if there are fewer than top_k results:
+            if i+1 >= top_df.shape[0]:
+                mov = block_count # just return current count
+            else:
+                next_block_count = top_df['block_count'].values[i+1]
+                # margin of victory (difference between current and next most popular motif)
+                mov = block_count - next_block_count
 
             # add row to data
             row = [loc,seq,pos,mov,block_summ, block_count]
