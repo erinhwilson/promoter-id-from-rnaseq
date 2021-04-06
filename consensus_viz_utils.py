@@ -1,3 +1,4 @@
+import altair as alt
 from collections import Counter
 import logomaker
 import matplotlib.pyplot as plt
@@ -12,6 +13,8 @@ import swifter
 import Bio
 from Bio import motifs
 from Bio.Seq import Seq
+
+import genbank_utils as gu
 
 # +-----------------------------------+
 # | Functions for Viewing motif logos |
@@ -518,9 +521,281 @@ def score_predictions_to_motif(motif_blocks, m1, m2):
 
     return hex_score_df
 
+def get_baseline_info(f):
+    ''' 
+    Given a genbank file, build a baseline category df with the counts of number of
+    positions in each category
+    '''
+    GENOME_FWD, GENOME_REV,GENOME_LEN = gu.get_genome_fwd_rev_len(f)
+    print("Genome length:", GENOME_LEN, "bps")
+    print(GENOME_FWD[:10])
+    print(GENOME_REV[-10:])
+
+    # put into a tuple for a later function that expects this format
+    genomes = [
+        ('genome_fwd','genome_fwd',GENOME_FWD),
+        ('genome_rev','genome_rev',GENOME_REV)
+    ]
+
+    # extract tuples of just the feature coordinates from the genbank object
+    pos_feat_coords, neg_feat_coords = gu.get_pos_neg_relative_feature_coords(f, GENOME_LEN)
+
+    pos_dist_array,pos_nearest_feat_array = build_feature_distance_index(pos_feat_coords,GENOME_LEN)
+    neg_dist_array,neg_nearest_feat_array = build_feature_distance_index(neg_feat_coords,GENOME_LEN)
+
+    # make category df for all positions in the gneome to get baseline counts
+    # of each category
+    baseline_cat_df = build_genome_position_category_df(pos_dist_array, neg_dist_array)
+    
+    return baseline_cat_df, genomes, pos_dist_array, pos_nearest_feat_array, neg_dist_array, neg_nearest_feat_array
+    
+
+
+def compare_consensus_motifs(f_dict,gbFile, threshold=12):
+    '''
+    Given a file dict of bioprospector outputs:
+    1. determine the consensus motif
+    2. score the consensus against the input promoter predictions
+    3. search for the consensus across both strands of the genome
+    
+    '''
+    # get baseline genome category info from genbank file
+    baseline_cat_df,\
+    genomes, \
+    pos_dist_array, \
+    pos_nearest_feat_array, \
+    neg_dist_array, \
+    neg_nearest_feat_array = get_baseline_info(gbFile)
+    
+    # save various intermediate dfs to concat at the end
+    motif_dict = {}
+    hex_score_dfs = []
+    motif_match_dfs = []
+    motif_match_cat_dfs = []
+    top_motif_match_cat_dfs = []
+    
+    # loop through all selection files for different n-percent thresholds
+    for nperc in f_dict:
+        print(f"\nTop {nperc}% consensus")
+        # extract the consensus motif in 2 blocks
+        motif_blocks, m1, m2 = build_2Bmotif_from_selection_file(f_dict[nperc])
+        motif_dict[nperc] = (m1, m2)
+        
+        hex_score_df = score_predictions_to_motif(motif_blocks, m1, m2)
+        # add nperc column
+        hex_score_df['nperc'] = nperc
+        hex_score_dfs.append(hex_score_df)
+
+        # while we have a specific consensus motif block for this file, search
+        # for it across the genome
+        # from the consensus motif blocks, build variably spaced PSSMs (with 15-18bp spacers)
+        var_spaced_motifs = build_dict_of_motifs_to_try(m1, m2)
+
+        # search for PSSM matches in the forward and reverse direction
+        motif_match_df = find_and_score_motifs_in_seqs(var_spaced_motifs,genomes,{})
+        # add the genome category
+        motif_match_df = add_genome_category_to_pssm_matches(motif_match_df,
+                                        pos_dist_array,
+                                        pos_nearest_feat_array,
+                                        neg_dist_array,
+                                        neg_nearest_feat_array)
+        # add nperc column
+        motif_match_df['nperc'] = nperc
+        motif_match_dfs.append(motif_match_df)
+        
+        motif_match_cat_df = analyze_motif_matches_across_genome(
+            motif_match_df,
+            baseline_cat_df)
+        # add nperc column
+        motif_match_cat_df['nperc'] = nperc
+        motif_match_cat_dfs.append(motif_match_cat_df)
+        
+        
+        # also calculate enrichment for the top scoring matches
+        print(f"Calculating for top scoring matches (threshold={threshold})")
+        top_motif_match_df = motif_match_df[motif_match_df['score']>threshold]
+
+        top_motif_match_cat_df = analyze_motif_matches_across_genome(
+            top_motif_match_df,
+            baseline_cat_df)
+        # add nperc column
+        top_motif_match_cat_df['nperc'] = nperc
+        top_motif_match_cat_dfs.append(top_motif_match_cat_df)
+        
+    
+    # concat all dfs into combined version
+    print("Concatting final dfs")
+    all_hex_df = pd.concat(hex_score_dfs)
+    all_motif_match_df = pd.concat(motif_match_dfs)
+    all_motif_match_cat_df = pd.concat(motif_match_cat_dfs)
+    all_top_motif_match_cat_df = pd.concat(top_motif_match_cat_dfs)
+    
+    return motif_dict, all_hex_df, all_motif_match_df, all_motif_match_cat_df, all_top_motif_match_cat_df
 
 
 
+def reload_match_df_info(match_file, f_dict, gbFile,threshold=12):
+    print("reloading match file...")
+    mmdf = pd.read_csv(match_file,sep='\t')
+    print("reloading baseline info...")
+    baseline_cat_df,_,_,_,_,_ = get_baseline_info(gbFile) 
+    
+    motif_match_cat_dfs = []
+    top_motif_match_cat_dfs = []
+    motif_dict = {}
+    
+    for nperc in f_dict:
+        print(f"Building {nperc}% category dfs")
+        # extract the consensus motif in 2 blocks
+        motif_blocks, m1, m2 = build_2Bmotif_from_selection_file(f_dict[nperc])
+        motif_dict[nperc] = (m1, m2)
+        
+        # get all motif match df
+        mmdf_n = mmdf[mmdf['nperc']==nperc]
+        mmcdf = analyze_motif_matches_across_genome(
+            mmdf_n,
+            baseline_cat_df)
+        # add nperc column
+        mmcdf['nperc'] = nperc
+        motif_match_cat_dfs.append(mmcdf)
+        
+        
+        # also calculate enrichment for the top scoring matches
+        print(f"Calculating for top scoring matches (threshold={threshold})")
+        tmdf = mmdf[mmdf['score']>threshold]
+        tmdf_n = tmdf[tmdf['nperc']==nperc]
+
+        tmcdf = analyze_motif_matches_across_genome(
+            tmdf_n,
+            baseline_cat_df)
+        # add nperc column
+        tmcdf['nperc'] = nperc
+        top_motif_match_cat_dfs.append(tmcdf)
+        
+    
+    # concat all dfs into combined version
+    print("Concatting final dfs")
+    all_motif_match_cat_df = pd.concat(motif_match_cat_dfs)
+    all_top_motif_match_cat_df = pd.concat(top_motif_match_cat_dfs)
+    
+    return motif_dict, all_motif_match_cat_df, all_top_motif_match_cat_df
 
 
+def compare_genome_cat_enrichment(df,sci=False):
+    '''
+    Given a df of motif match frequencies in each genome region, visualize
+    the frequences as a bar chart. Small multiples of each n% used.
+    '''
+    fig, axes = plt.subplots(nrows=2, ncols=8, sharey=True, figsize=(15,8))
+    axes_list = [item for sublist in axes for item in sublist] 
+    genome_cat_order = ['in gene','intergenic','<300 to ATG','<100 to ATG']
 
+    for nperc, sub_df in df.groupby("nperc"):
+        # calculate the rank of each match by vote count
+
+        # make the bar chart on the next axis
+        ax = axes_list.pop(0)
+        sns.barplot(data=sub_df,x='cat',y='match_perc',ax=ax,order=genome_cat_order)
+
+        # axis and title configs
+        ax.set_title(f"{nperc} %")#.split('|')[0])
+        ax.set_xticklabels(ax.get_xticklabels(),rotation=90)
+        #ax.set_yticklabels(ax.get_yticklabels(),fontsize=14)
+        ax.set_xlabel("")
+        ax.set_ylabel("")
+        ax.tick_params(axis="y", labelsize=14)
+
+    # Now use the matplotlib .remove() method to 
+    # delete anything we didn't use
+    if sci:
+        plt.ticklabel_format(axis="y", style="sci", scilimits=(0,0))
+    for ax in axes_list:
+        ax.remove()
+    return fig.tight_layout()
+
+
+def build_enrich_ratio_df(mmcdf,motif_dict):
+    '''
+    Given a dict of biop result files, the motif match w/ category and TOP 
+    motif match w/ category dfs, convert into df of enrichment ratios for
+    altair plotting
+    '''
+    data = []
+
+    for nperc in motif_dict:
+        # get IC from motif
+        (m1, m2) = motif_dict[nperc]
+        motif_ave_ic = (m1.pssm.mean() + m2.pssm.mean())/ (m1.length + m2.length)
+
+        # get enrich of matches in promoter region for this motif
+        mmcdf_n = mmcdf[mmcdf['nperc']==nperc]
+        if 'intergenic' in mmcdf_n['cat'].values:
+            int_mat_perc = mmcdf_n[mmcdf_n['cat'] == 'intergenic']['match_perc'].values[0]
+        # if no matches in df, return 0
+        else: 
+            int_mat_perc = 0
+        
+        if '<100 to ATG' in mmcdf_n['cat'].values:
+            d100_mat_perc = mmcdf_n[mmcdf_n['cat'] == '<100 to ATG']['match_perc'].values[0]
+        # if no matches in df, return 0
+        else:
+            d100_mat_perc = 0
+        
+        # if no matches, return nan (divide by zero in a log)
+        enrich_ratio = np.nan if int_mat_perc == 0 else np.log2(d100_mat_perc/int_mat_perc)
+
+        row = [nperc, enrich_ratio, motif_ave_ic,''.join(m1.consensus),''.join(m2.consensus)]
+        data.append(row)
+
+
+    df = pd.DataFrame(data, columns = ['nperc','enrich_ratio','motif_ave_ic','m1','m2'])
+    return df
+
+
+def compare_orgs_chart(df_dict):
+    '''
+    Given a dictionary of data frames for different orgs,
+    combine them and plot IC and enrichment on same chart
+    '''
+    for org in df_dict:
+        df_dict[org]['org'] = org
+    all_org_df = pd.concat([df_dict[org] for org in df_dict])
+    
+   
+    p = alt.Chart(all_org_df).mark_circle(
+        #stroke="black",
+        opacity=0.5,
+        size=500
+    ).encode(
+        x=alt.X('motif_ave_ic:Q',title="Motif Average Positional Information Content"),
+        y=alt.Y('enrich_ratio:Q',title="Promoter Enrichment Ratio"),
+        color=alt.Color('org:N',scale=alt.Scale(scheme='Set2'),title="Organism"),
+        tooltip=['nperc:O','enrich_ratio','motif_ave_ic:Q','m1:N','m2:N']
+    )
+    
+    # top n% text label
+    text = alt.Chart(all_org_df).mark_text(
+        align='center',
+        baseline='middle',
+        size=14,
+        color='black'
+    ).encode(
+        x='motif_ave_ic:Q',
+        y='enrich_ratio:Q',
+        text=alt.Text('nperc:N'),
+        tooltip=['nperc:O','enrich_ratio','motif_ave_ic:Q','m1:N','m2:N']
+#     ).transform_calculate(
+#         nperc='datum.nperc + "%"'
+    ).properties(
+        height=250,
+        width=500,
+    ).interactive()
+    
+    chart = p+text
+    chart = chart.configure_axis(
+        grid=False,
+        labelFontSize=14,
+        titleFontSize=18
+    )
+
+    return chart
