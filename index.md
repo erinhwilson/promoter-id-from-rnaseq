@@ -8,6 +8,7 @@ See the following Jupyter Notebooks for tutorials on how various pieces of analy
 1. [Exploration of TPM data across conditions](tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/tpm-data-exploration.ipynb)
 1. [Inspection of BioProspector output files](tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/inspect_BioProspector_results.ipynb)
 1. [Consensus motif analysis](tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/analyze_consensus_motif.ipynb)
+1. [Compare consensus predictions across organisms](tutorials/compare_consensus_predictions.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/compare_consensus_predictions.ipynb)
 1. [Operon distance exploration](tutorials/operon_distance_exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/operon_distance_exploration.ipynb)
 
 ## Interactive Visualizations
@@ -20,7 +21,8 @@ Choose an image in the gallery to explore explore data interactively.
     <figcaption >Top Gene Set Tradeoff</figcaption>
     </figure>
   </a> -->
-    <table><tr>
+    <table>
+        <tr>
         <td>
             <a href="viz/tradeoff.html" title="Go to interactive visualization" display='inline'>
                 <img src="img/tradeoff.png" alt="Top Gene Set Tradeoff" width="300"/>
@@ -39,6 +41,14 @@ Choose an image in the gallery to explore explore data interactively.
                 <p style="text-align: center">Top 3% Expression</p>
             </a>
         </td>
-    </tr></table>
+        </tr>
+        <td>
+            <a href="viz/figureS4C.html" title="Go to interactive visualization" display='inline'>
+                <img src="img/figureS4C.png" alt="Promoter Enrichment vs IC" width="300"/>
+                <p style="text-align: center">Promoter Enrichment vs IC</p>
+            </a>
+        </td>
+        </tr>
+    </table>
 </div>
 
