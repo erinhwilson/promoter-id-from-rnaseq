@@ -1,0 +1,66 @@
+> BSU_00440|veg|conserved hypothetical protein
+CGTGTTGTACAATAAATGTAGTGAGGTGGA
+> BSU_00490|spoVG|regulator required for spore cortex synthesis (stage V sporulation)
+ACTAATGCTTTTATATAGGGAAAAGGTGGT
+> BSU_01020|rplK|ribosomal protein L11 (BL11)
+TATAAAGAATGAAACCTTGAGTGGGAGGG
+> BSU_01030|rplA|ribosomal protein L1 (BL1)
+TATTCCGCTATAACCACATAAGGAGGA
+> BSU_01090|rulS|K-turn RNA binding protein; alternative ribosomal protein L7A
+TCGAAATAAACCTGTTACTTTGGAGGA
+> BSU_01100|rpsL|ribosomal protein S12 (BS12)
+TGGGTTATAAAACGTAATGAAGGGAGGA
+> BSU_01130|tufA|elongation factor Tu
+CATTACTAATTAAAAGCTCTTAAGGAGGA
+> BSU_01150|rpsJ|ribosomal protein S10 (BS13); transcription antitermination factor
+TCTAACGTGATGTAGGCGAAAAGGAGGG
+> BSU_01430|rpoA|RNA polymerase (alpha subunit)
+CTATTCGAGGTTTCGACGTTTTGAAGGAGG
+> BSU_03480|srfAA|surfactin synthetase
+TGTTCACTGCTTATAAAGATTAGGGGAGGT
+> BSU_03510|srfAC|surfactin synthetase
+TGTGCTTTCCTGCTCCTACAATGAGAAGGA
+> BSU_13560|mtnK|methylthioribose kinase (methionine salvage pathway, promiscuous)
+CATATTAATTAATTACATAATTGGAGGT
+> BSU_14600|pdhC|pyruvate dehydrogenase (dihydrolipoamide acetyltransferase E2 subunit)
+TAAAATTGCTTAATCAAACTAGGAGGT
+> BSU_15920|acpA|acyl carrier protein
+CGAATCCACTATAATACTTGAGGGGAGG
+> BSU_15970|ylxM|component of the signal recognition particle (SRP) protein-targeting pathway
+CATATACAATATCGGAATAAATTGGATGA
+> BSU_16490|rpsB|ribosomal protein S2
+TCTGTACAAAAATGACCTAAGCGGAGGA
+> BSU_16680|rpsO|ribosomal protein S15 (BS18)
+GGTAACTGGGGCTAAATATGATTTGGAGGT
+> BSU_16960|rny|endoribonuclease Y
+AGCAACAACCAAGTTCATAGCAAGAGGAGG
+> BSU_21490|sunI|protein of immunity to sublancin
+TGGTAAAATTATATAAAAACATAAGAAAG
+> BSU_22790|hbs|non-specific DNA-binding protein HBsu
+ACGAACTGAATGTATCCTTTTGGGAGGAGG
+> BSU_25020|sodA|superoxide dismutase (Mn[2+]-dependent)
+CATTTCAGTACATATATACTAAGGAGGA
+> BSU_25050|yqgA|cell wall protein
+GATAATTATGTAATAGTTTAAAGGAGGA
+> BSU_25410|rpsU|ribosomal protein S21
+GTAGTCGATTGGTGTATTCGGAGGGAGG
+> BSU_29130|icd|isocitrate dehydrogenase
+TCTAAATATGAATTACATACTGGGAGGT
+> BSU_31910|yukE|small WGX100 secreted protein (ESX-dependent secretion)
+CATATTTAGGCTGATGGCACAGGAGGT
+> BSU_35360|hag|flagellin protein
+CGTGCCTTAACAACATATTCAGGGAGGA
+> BSU_36850|atpF|ATP synthase (subunit b, component F0)
+TGGATCAGCAAAGAAAAACCTGCAGAAGGG
+> BSU_37070|rpmEA|ribosomal protein L31
+TGTTTCCACACGGGATTCAGGGCGGAAGGA
+> BSU_37460|rapF|response regulator aspartate phosphatase anti-activator of ComA
+TATGACATATATAGAATTATGAAGGGAGGG
+> BSU_40090|ahpC|alkyl hydroperoxide reductase (small subunit)
+TATGCTTTCTAATACATTTTTAGGAGGA
+> BSU_40910|rpsF|ribosomal protein S6 (BS9)
+CATTATGGGCCGCTTAGTCCAAAAGGAGGT
+> BSU_misc_RNA_47||mRNA L20_leader attenuator sequence
+TGGTTCTTTGTATTCTGGGTGGGGATG
+> BSU_misc_RNA_55|ssrA|transfer-messenger RNA (tmRNA, 10Sa RNA)
+CAGATCACGACGCCATTCATTTGAAGGA

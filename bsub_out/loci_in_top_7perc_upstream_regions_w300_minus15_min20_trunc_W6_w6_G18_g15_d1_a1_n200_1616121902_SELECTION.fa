@@ -1,0 +1,94 @@
+> BSU_00440|veg|conserved hypothetical protein
+TTGACAACGTCTTATTAACGTTGATATAAT
+> BSU_00490|spoVG|regulator required for spore cortex synthesis (stage V sporulation)
+GTGGAATTGATACACTAATGCTTTTATATA
+> BSU_01020|rplK|ribosomal protein L11 (BL11)
+TTGAAATTGCTATATATAAATGATAAT
+> BSU_01030|rplA|ribosomal protein L1 (BL1)
+TATTCGTGGGAGGTTATTCCGCTATAAC
+> BSU_01070|rpoB|RNA polymerase (beta subunit)
+TTGGAAGAAATGCTTATTACACATATAAT
+> BSU_01090|rulS|K-turn RNA binding protein; alternative ribosomal protein L7A
+TTGACATTCGTCTCCTAGAATGATAAT
+> BSU_01100|rpsL|ribosomal protein S12 (BS12)
+GATGAACCACCTGGGTATGTGGGTTATAAA
+> BSU_01130|tufA|elongation factor Tu
+TTGCCGCTTAACTCAAGTATAACTACTAT
+> BSU_01150|rpsJ|ribosomal protein S10 (BS13); transcription antitermination factor
+TTGATAAATAAGAAAAACCCCTGTATAAT
+> BSU_01430|rpoA|RNA polymerase (alpha subunit)
+TTGCCTGAGCACATACGGGACTAAACAAT
+> BSU_03480|srfAA|surfactin synthetase
+TAGAAAGATAAAAAATATTGAAAACAAT
+> BSU_03510|srfAC|surfactin synthetase
+TTGACATGCTTGAGGAGAATTTAAAAT
+> BSU_09100|cspB|major cold-shock protein, RNA helicase co-factor, RNA co-chaperone
+GAGAAAACAGATGAATTTCCGTAAATA
+> BSU_13560|mtnK|methylthioribose kinase (methionine salvage pathway, promiscuous)
+TTTACGGCCACATATTAATTAATTACATA
+> BSU_14600|pdhC|pyruvate dehydrogenase (dihydrolipoamide acetyltransferase E2 subunit)
+TTTCAATGCTTACGATGTAAACTTTAAAAT
+> BSU_15920|acpA|acyl carrier protein
+TAGTTTTTTAAAAACGAATCCACTATAAT
+> BSU_15970|ylxM|component of the signal recognition particle (SRP) protein-targeting pathway
+TTGACAGTGTCATTAAAACCGTGTAAACT
+> BSU_16090|sucC|succinyl-CoA synthetase (beta subunit)
+TAGACAATTCTTCCAGTATTATTATAGAAT
+> BSU_16490|rpsB|ribosomal protein S2
+TTGTCGGATAAAGCTGTGTTATATTAT
+> BSU_16500|tsf|elongation factor Ts
+TTTTCAAGAAAAATGTGTAATATACATA
+> BSU_16680|rpsO|ribosomal protein S15 (BS18)
+TTGCAACGCACGCAAATTTTATTCTAAAAT
+> BSU_16960|rny|endoribonuclease Y
+TTGACAAGTATTTCCGACACATTTACAAT
+> BSU_21480|sunA|sublancin 168 lantibiotic antimicrobial precursor peptide; SPBeta prophage
+TAGAAGGTACTTTTTTGTATCTATAAT
+> BSU_21490|sunI|protein of immunity to sublancin
+TTTAAAAACTTAAAAAACATGGTAAAAT
+> BSU_22790|hbs|non-specific DNA-binding protein HBsu
+TTGACGAGCAAGGGATTGACGCTTTAAAAT
+> BSU_22880|rpfA|RNA degradation presenting factor (ribosomal protein S1 homolog)
+TTGACAAACCTGTCCTTTTATTAGAAG
+> BSU_23860|gndA|NADP+-dependent 6-P-gluconate dehydrogenase
+GTGAATGTATGGTAATTTCTTTATTATAAA
+> BSU_25020|sodA|superoxide dismutase (Mn[2+]-dependent)
+GTGAAGCGGCATTTCAGTACATATATA
+> BSU_25050|yqgA|cell wall protein
+TATAAAACTCGTATTCCATTATTTACAAT
+> BSU_25410|rpsU|ribosomal protein S21
+TTGACCTGACTGATGGCTTATATTATAAT
+> BSU_29130|icd|isocitrate dehydrogenase
+TAGGAAAAATCATTTTATTTTCTATATA
+> BSU_31910|yukE|small WGX100 secreted protein (ESX-dependent secretion)
+TTGACTATGCCGAAAAACTGTTTTTATAAT
+> BSU_35310|hpf|ribosome-associated sigma 54 modulation protein; ribosome dimerisation factor
+TATACATATACCTCCGAACCGCCAATAAC
+> BSU_35360|hag|flagellin protein
+GAGGCGCAAAAGACTCAGCCAGTTACAAA
+> BSU_36850|atpF|ATP synthase (subunit b, component F0)
+GAGACAAGTGCGGCTGCTGGATCAGCAAA
+> BSU_37070|rpmEA|ribosomal protein L31
+TTGCAAAAGAAGTAAATCACTGATATAAT
+> BSU_37120|fbaA|fructose-1,6-bisphosphate aldolase
+GAGAAAAAGCGATCTGAGTATTTACATA
+> BSU_37460|rapF|response regulator aspartate phosphatase anti-activator of ComA
+CAGACATACACTGCTCACGCAGATATAAC
+> BSU_38170|qoxA|cytochrome aa3-600 quinol oxidase (subunit II)
+TTTAAGCGAAAATGGGATGAAGTTTATAAA
+> BSU_38850|yxkC|conserved protein of unknown function
+GAGAAATAATATAGGCATTATAGTACATA
+> BSU_40090|ahpC|alkyl hydroperoxide reductase (small subunit)
+TTGAAAGCGATTATGCTTTCTAATACATT
+> BSU_40580|yybN|conserved protein of unknown function
+TTTACAGGTTATTACAGTTAAGATATAAT
+> BSU_40910|rpsF|ribosomal protein S6 (BS9)
+TTGTAAAGGGACAAGAGCTTTGGTATAAT
+> BSU_misc_RNA_20|mswC|S-adenosylmethionine riboswitch
+TTGACAACTAACTAAATTACCTGTTACCAT
+> BSU_misc_RNA_29|mswE|S-adenosylmethionine riboswitch
+TTGACTTATGTTAGAATTGTGCTAAAAT
+> BSU_misc_RNA_47||mRNA L20_leader attenuator sequence
+GTGTCAGGCTCCCTTCTGCTCCTTATATC
+> BSU_misc_RNA_55|ssrA|transfer-messenger RNA (tmRNA, 10Sa RNA)
+TTGAAAAGAGCCGTGATCATGTTATAAT

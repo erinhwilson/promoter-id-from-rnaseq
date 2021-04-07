@@ -1,0 +1,70 @@
+> b0114|aceE|pyruvate dehydrogenase E1 component
+GACAGGTTCCAGAAAACTCAACGTTATTA
+> b0565|ompT|outer membrane protease VII (outer membrane protein 3b)
+ATGGCACTTAAATAGATAAAAGCACCACA
+> b0605|ahpC|alkyl hydroperoxide reductase, AhpC component
+AGGGTAGTTCAGATTACACGGTCACCT
+> b0720|gltA|citrate synthase
+CCTGCAAGCGCCCAGAGCTCTGTACCCA
+> b0755|gpmA|2,3-bisphosphoglycerate-dependent phosphoglycerate mutase
+GCGGCAATATAATGAGAATTATTATCA
+> b0812|dps|stationary phase nucleoid protein that sequesters iron and protects DNA from damage
+CGAGCAGATAAATAAGAATTGTTCTTATCA
+> b0911|rpsA|30S ribosomal subunit protein S1
+CCGGCATGGAGCCAGGTGGACGTTAAATA
+> b0957|ompA|outer membrane porin A
+CCGGTGAAGGATTTAACCGTGTTATCT
+> b1094|acpP|acyl carrier protein
+CCGGGATTTAGTTGCAAATTTTTCAACA
+> b1136|icd|isocitrate dehydrogenase
+ACGGCAAACAATAGGGTAGTATTGACA
+> b1237|hns|DNA-binding transcriptional dual regulator H-NS
+ACTGAATTTAAGGCTCTATTATTACCT
+> b1243|oppA|oligopeptide ABC transporter periplasmic binding protein
+CCGGGATTACACATGCTGGTTAATACCA
+> b1288|fabI|enoyl-[acyl-carrier-protein] reductase
+CGGTCGGACCTGGCAACTATAGCTACTCA
+> b1324|tpx|lipid hydroperoxide peroxidase
+GCTGTGTTATTGACAGTTAGCATAAACT
+> b1677|lpp|murein lipoprotein
+TGGGCGCTTTTTTTATTTAATCGATAACCA
+> b1779|gapA|glyceraldehyde-3-phosphate dehydrogenase A
+GCTGCACCTAAATCGTGATGAAAATCACA
+> b2215|ompC|outer membrane porin C
+ACTTAAGAATAAGTTATTGATTTTAACCT
+> b2414|cysK|O-acetylserine sulfhydrylase A
+GCTAAATCCTTACTTCCGCATATTCTCT
+> b2551|glyA|serine hydroxymethyltransferase
+CCTGAAGGTAATCGTTTGCGTAAATTCCTT
+> b2779|eno|enolase
+GCGTTGTTTGTCTGGAGTTTCAGTTTAACT
+> b2913|serA|phosphoglycerate dehydrogenase
+GGGGAACCTCCCCCGTTAAAAAAATTCTCT
+> b2925|fbaA|fructose-bisphosphate aldolase class II
+GCAGGAAGGCGACAAGAGAGTGAATCCCCA
+> b2942|metK|methionine adenosyltransferase
+CACAACAGTTTGAGCTAACCAAATTCTCT
+> b3236|mdh|malate dehydrogenase
+ACGGCAATTAAATGCATAAACGCTAAACT
+> b3321|rpsJ|30S ribosomal subunit protein S10
+CGGGGAGCTACGTAAGAACGGTTACACT
+> b3341|rpsG|30S ribosomal subunit protein S7
+CCGTTAAGTAAGGCCAAACGTTTTAACT
+> b3342|rpsL|30S ribosomal subunit protein S12
+TCGGCATCGCCCTAAAATTCGGCGTCCTCA
+> b3495|uspA|universal stress global stress response regulator
+CGCTATAAGGTAAGGATGGTCTTAACA
+> b3774|ilvC|ketol-acid reductoisomerase (NADP(+))
+ATGTGACGTTGTGAATATATCAATTTCCG
+> b3829|metE|cobalamin-independent homocysteine transmethylase
+CGGGGATGAATAAACTTGCCGCCTTCCCT
+> b3908|sodA|superoxide dismutase (Mn)
+ACGGCATTAAGTGGGTGATTTGCTTCACA
+> b3983|rplK|50S ribosomal subunit protein L11
+CGGGGAGCCTCTCAGAGGCGTTATTACCCA
+> b3985|rplJ|50S ribosomal subunit protein L10
+GCAGGAGTTTCGCAAGAAACTTAATCCCCT
+> b3987|rpoB|RNA polymerase subunit beta
+GCGGAAAGTGTTCCATTTTCCGGTCAACA
+> b4014|aceB|malate synthase A
+GGTGAATAAATTTTATTCATATTGTTATCA

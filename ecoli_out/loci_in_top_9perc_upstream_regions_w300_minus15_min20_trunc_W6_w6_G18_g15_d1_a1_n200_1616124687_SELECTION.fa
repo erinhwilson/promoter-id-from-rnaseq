@@ -1,0 +1,176 @@
+> b0008|talB|transaldolase B
+ACGCTACGAGGTACTTGATAACTTCTGC
+> b0014|dnaK|chaperone protein DnaK
+TCTGCGCAAAAGCACAAAAAATTTTTGCA
+> b0074|leuA|2-isopropylmalate synthase
+ACGCAGTCAAACAAAAAACCCGCGCCAT
+> b0096|lpxC|UDP-3-O-acyl-N-acetylglucosamine deacetylase
+GTGCTAAACTGGCCCGCCGAATGTATAGT
+> b0114|aceE|pyruvate dehydrogenase E1 component
+ACGTAGAACCTGTCTTATTGAGCTTTCCGG
+> b0116|lpd|lipoamide dehydrogenase
+CCCCAGGAGCTTACATAAGTAAGTGACT
+> b0118|acnB|hypothetical protein
+CTGCTATTCTGCCCGTTGCGGTACTGG
+> b0126|can|carbonic anhydrase 2
+GGTTTAAATCGTCCCGGAGTTGCCCTA
+> b0145|dksA|RNA polymerase-binding transcription factor DksA
+GTGTTACGTTTAGATAATTGCTATCCGG
+> b0170|tsf|protein chain elongation factor EF-Ts
+TTGCAGAAAGGCGGCAAGCTCGAGAAT
+> b0172|frr|ribosome-recycling factor
+CCGTAATATGTTTAATCAGGGCTATACT
+> b0432|cyoA|cytochrome bo3 ubiquinol oxidase subunit 2
+CAGCCAAATCCAAGTAACAGGAATTTAAT
+> b0436|tig|trigger factor
+CCGCTATAATGCCGCGTCCTATTTGAAT
+> b0438|clpX|ATP-dependent Clp protease ATP-binding subunit ClpX
+ATGCCAGAGGCGCAACTGTGCCGCTATACT
+> b0565|ompT|outer membrane protease VII (outer membrane protein 3b)
+AGTAATTGAGGATAAACCTCATGCTAT
+> b0605|ahpC|alkyl hydroperoxide reductase, AhpC component
+TTAGCCGAATCGGCAAAAATTGGTTACCT
+> b0720|gltA|citrate synthase
+TTGCTAAGTACTTGATTCGCCATTTATT
+> b0754|aroG|3-deoxy-7-phosphoheptulonate synthase, Phe-sensitive
+AGCCAGGTTATGAAACGCAGCAGAGAAT
+> b0755|gpmA|2,3-bisphosphoglycerate-dependent phosphoglycerate mutase
+GTTACGCCCTCGTCATGAGGGCTTTAT
+> b0812|dps|stationary phase nucleoid protein that sequesters iron and protects DNA from damage
+GTGCTATACTTAATCTCGTTAATTACTG
+> b0893|serS|serine--tRNA ligase
+ATGTTATCGTTGCGGTAATGTTGTTACTG
+> b0907|serC|phosphoserine/phosphohydroxythreonine aminotransferase
+AGCCACATTTTTGCCCTCAACGGTTTTACT
+> b0911|rpsA|30S ribosomal subunit protein S1
+CCGAATTTGCAGTACCCCCGTTGCAAT
+> b0957|ompA|outer membrane porin A
+TTGTAAGTTTTCAACTACGTTGTAGACT
+> b1094|acpP|acyl carrier protein
+TTGCAAATTTTTCAACATTTTATACACT
+> b1136|icd|isocitrate dehydrogenase
+TCCGTATCGCAGGACGCAAACGCATATGCA
+> b1237|hns|DNA-binding transcriptional dual regulator H-NS
+GCTATTGCACAACTGAATTTAAGGCTCTAT
+> b1241|adhE|aldehyde-alcohol dehydrogenase
+AAGCAAATCATCACCGCACTGACTATACT
+> b1243|oppA|oligopeptide ABC transporter periplasmic binding protein
+ATGCTGGTTAATACCAGTAATTATAAT
+> b1288|fabI|enoyl-[acyl-carrier-protein] reductase
+TAGCTACTCACAGCCAGGTTGATTATAAT
+> b1324|tpx|lipid hydroperoxide peroxidase
+TCTGCGGATTAAGCGCAAATAGCGTTTGCT
+> b1334|fnr|DNA-binding transcriptional dual regulator FNR
+TCTGCTGTTAAGGTTTGCTTAGACTTACT
+> b1641|slyB|outer membrane lipoprotein SlyB
+AACCATGGATTCACATATGCCATATACT
+> b1676|pykF|pyruvate kinase I
+TCTGCACGCTTTTTCGATGTCACCTATCCT
+> b1677|lpp|murein lipoprotein
+GTAACGCTACATGGAGATTAACTCAAT
+> b1719|thrS|threonine--tRNA ligase
+AGGTTAATGTCTTTCATTTGTGTACCTG
+> b1779|gapA|glyceraldehyde-3-phosphate dehydrogenase A
+GTGATGAAAATCACATTTTTATCGTAAT
+> b1831|proQ|RNA chaperone ProQ
+TAGCATTTACTGATAGCGTCATTATAAT
+> b2029|gnd|6-phosphogluconate dehydrogenase, decarboxylating
+AAGCATGGATAAGCTATTTATACTTTAAT
+> b2185|rplY|50S ribosomal subunit protein L25
+TTTGCATACGCAAAGCAGATCACTTACCT
+> b2215|ompC|outer membrane porin C
+GTTAGGTGCTTATTTCGCCATTCCGCAAT
+> b2316|accD|acetyl-CoA carboxyltransferase subunit beta
+ATCCAAAGTTTCGGGCTGTTATGTTTTAAT
+> b2414|cysK|O-acetylserine sulfhydrylase A
+ATGCTAAATCCTTACTTCCGCATATTCT
+> b2478|dapA|4-hydroxy-tetrahydrodipicolinate synthase
+TGCCATACCAAACGTACCATTGAGACACT
+> b2551|glyA|serine hydroxymethyltransferase
+CTGTTATCGCACAATGATTCGGTTATACT
+> b2587|kgtP|alpha-ketoglutarate:H(+) symporter
+TTGCATAATGATATGCAACAAATGTATAAT
+> b2752|cysD|sulfate adenylyltransferase subunit 2
+CCGTTAAGGAACTACTCATTCTAATTG
+> b2779|eno|enolase
+TTGTTTGTCTGGAGTTTCAGTTTAACT
+> b2913|serA|phosphoglycerate dehydrogenase
+GCGACGCAAACGTTCATATTGCCGCAAT
+> b2924|mscS|small conductance mechanosensitive channel MscS
+TACGCTTATCAGGCCTACACGTATCCT
+> b2925|fbaA|fructose-bisphosphate aldolase class II
+TTGCAGGAAGGCGACAAGAGAGTGAAT
+> b2942|metK|methionine adenosyltransferase
+ACACAACAGTTTGAGCTAACCAAATTCTCT
+> b3035|tolC|outer membrane channel TolC
+CTGCTAGAATCCGCAATAATTTTACAGT
+> b3163|nlpI|lipoprotein NlpI
+TTGTTAGCAACCGGGAACAGGACGTTCATT
+> b3207|yrbL|protein kinase-like domain-containing protein YrbL
+AGGCATTGTTTAGGTTTTGTTTAAGTTAAT
+> b3231|rplM|50S ribosomal subunit protein L13
+AGACGTTTGGGTGTTCACCAACGTGTAACT
+> b3236|mdh|malate dehydrogenase
+ACGCTAAACTTGCGTGACTACACATTCTTG
+> b3298|rpsM|30S ribosomal subunit protein S13
+TATGTCTGTGCGTTTCCATTTGAGTATCCT
+> b3310|rplN|50S ribosomal subunit protein L14
+GCCGTTTATTTTTTCTACCCATATCCT
+> b3321|rpsJ|30S ribosomal subunit protein S10
+AGCAATACGCTTGCGTTCGGTGGTTAA
+> b3341|rpsG|30S ribosomal subunit protein S7
+CTCCGTTAAGTAAGGCCAAACGTTTTAACT
+> b3342|rpsL|30S ribosomal subunit protein S12
+ATTACGTGTTTACGAAGCAAAAGCTAA
+> b3357|crp|DNA-binding transcriptional dual regulator CRP
+ATGCTAAAACAGTCAGGATGCTACAGT
+> b3388|damX|cell division protein DamX
+CCGCTTATCAAGCGGTCTATTAGCTTCAGG
+> b3433|asd|aspartate-semialdehyde dehydrogenase
+GTCGCATTACTGATGGCTTCGCTATCAT
+> b3495|uspA|universal stress global stress response regulator
+GCGGATTGACGGATCATCCGGGTCGCTAT
+> b3509|hdeB|periplasmic acid stress chaperone
+GCAGCTATTCCTCCTGTTCATATATAAT
+> b3510|hdeA|HdeA monomer, chaperone active form
+AATGCAGTCGATTTAATAAAAATTTCCT
+> b3544|dppA|dipeptide ABC transporter periplasmic binding protein
+CTGCAAATAGCTGTTTGAAGTTTTTTTAAT
+> b3560|glyQ|glycine--tRNA ligase subunit alpha
+CTGTATATCTTCCATCCAGCGGGTATACT
+> b3774|ilvC|ketol-acid reductoisomerase (NADP(+))
+CCGCAATAAATTTCCTGTCATATAGTGAAT
+> b3780|rhlB|ATP-dependent RNA helicase RhlB
+GTGTAACATTAACCAACTAAAGGTTGACT
+> b3783|rho|transcription termination factor Rho
+ATCCTGCCATACCATTCACAACATTAAGT
+> b3829|metE|cobalamin-independent homocysteine transmethylase
+CAGTAAGCTCCCGGGGATGAATAAACT
+> b3871|bipA|ribosome-dependent GTPase, ribosome assembly factor
+GCGATTAATCCGTGTACAATAACGCGCTAT
+> b3908|sodA|superoxide dismutase (Mn)
+TTTGCTTCACATCTCGGGCATTTTCCT
+> b3919|tpiA|triose-phosphate isomerase
+AGCCTTTGTGCCGATGAATCTCTATACT
+> b3956|ppc|phosphoenolpyruvate carboxylase
+GTGAATTTAATGACGTAAATTCCTGCTAT
+> b3983|rplK|50S ribosomal subunit protein L11
+GTTGCACAAGGCGTGAGATTGGAATACAAT
+> b3985|rplJ|50S ribosomal subunit protein L10
+ACGCTAAGATTATTCTTTTATATTCTGG
+> b3987|rpoB|RNA polymerase subunit beta
+CGCCAGTAGCGTTTCACACTGTTTGACT
+> b3994|thiC|phosphomethylpyrimidine synthase
+GCGAAGGGAACAAGAGTTAATCTGCTAT
+> b4014|aceB|malate synthase A
+GTGAATAAATTTTATTCATATTGTTAT
+> b4025|pgi|glucose-6-phosphate isomerase
+CCGTTACTTGGGCAACGCGCCTCTTCTGG
+> b4177|purA|adenylosuccinate synthetase
+CTGTAACTCTGAAAAAGCGATGGTAGAAT
+> b4200|rpsF|30S ribosomal subunit protein S6
+AGGTTAATTGCGAAAGGGGAGATTTATT
+> b4226|ppa|inorganic pyrophosphatase
+GCGAAGACATTCGGCGCGAGTTGGCTAT
+> b4401|arcA|DNA-binding transcriptional dual regulator ArcA
+ATGCATCAGGCAGGTCAGGGACTTTTGT

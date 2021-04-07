@@ -1,0 +1,132 @@
+> BSU_00110|pdxS|glutamine amidotransferase for pyridoxal phosphate synthesis; pyridoxal 5'-phosphate synthase complex, synthase subunit
+TTCAAAGCGCTAAAAACCGAATAAAAT
+> BSU_00440|veg|conserved hypothetical protein
+TTGACAACGTCTTATTAACGTTGATATAAT
+> BSU_00490|spoVG|regulator required for spore cortex synthesis (stage V sporulation)
+TTTCAGAAAAAATCGTGGAATTGATACACT
+> BSU_00690|ftsH|ATP-dependent cytoplasmic membrane protease
+TTGTATTGGAATGATTTTCTATGGTACTAT
+> BSU_01020|rplK|ribosomal protein L11 (BL11)
+TTGAAATTGCTATATATAAATGATAAT
+> BSU_01030|rplA|ribosomal protein L1 (BL1)
+TTCGCAACCCTTATTCGTGGGAGGTTAT
+> BSU_01070|rpoB|RNA polymerase (beta subunit)
+TTGGAAGAAATGCTTATTACACATATAAT
+> BSU_01090|rulS|K-turn RNA binding protein; alternative ribosomal protein L7A
+TTGACATTCGTCTCCTAGAATGATAAT
+> BSU_01100|rpsL|ribosomal protein S12 (BS12)
+TTTGCGTAAGATTCCATCTTGTGTAAA
+> BSU_01130|tufA|elongation factor Tu
+TTGCCGCTTAACTCAAGTATAACTACTAT
+> BSU_01150|rpsJ|ribosomal protein S10 (BS13); transcription antitermination factor
+TTGATAAATAAGAAAAACCCCTGTATAAT
+> BSU_01430|rpoA|RNA polymerase (alpha subunit)
+TTGCCTGAGCACATACGGGACTAAACAAT
+> BSU_01730|sigW|RNA polymerase ECF(extracytoplasmic function)-type sigma factor W
+TTGAAACGAAGCTCGTATACATACAGA
+> BSU_03480|srfAA|surfactin synthetase
+TTGGAAGCACTGCTTTTTAAGTGTAGT
+> BSU_03510|srfAC|surfactin synthetase
+TTGACATGCTTGAGGAGAATTTAAAAT
+> BSU_09100|cspB|major cold-shock protein, RNA helicase co-factor, RNA co-chaperone
+TTGAAAGTTTGTTAAGAGCAAGAATAGT
+> BSU_10770|wprA|cell wall-associated protease
+TTGATAGAGCTGGTTTTTTTTATATTTA
+> BSU_12430|rapA|response regulator aspartate phosphatase
+TTGTTGCGGTTAGCCGAAATTCGACAAT
+> BSU_13560|mtnK|methylthioribose kinase (methionine salvage pathway, promiscuous)
+TTTACGGCCACATATTAATTAATTACATA
+> BSU_13900|ptsH|histidine-containing phosphocarrier protein of the phosphotransferase system (PTS) (HPr protein)
+TTGTCAGATGACAAGTACGGTTGTATGAT
+> BSU_14540|rnpZA|omega 1 subunit of RNA polymerase
+TTTCCTTATATTCCGTTTTCGAATATAAT
+> BSU_14580|pdhA|pyruvate dehydrogenase (E1 alpha subunit)
+TTGACGGTTCTTCTTTATTTGGTGTAAA
+> BSU_14600|pdhC|pyruvate dehydrogenase (dihydrolipoamide acetyltransferase E2 subunit)
+TTTCAATGCTTACGATGTAAACTTTAAAAT
+> BSU_15920|acpA|acyl carrier protein
+TAGTTTTTTAAAAACGAATCCACTATAAT
+> BSU_15960|ylqB|conserved exported protein of unknown function
+TTTACACGGTTTTAATGACACTGTCAA
+> BSU_15970|ylxM|component of the signal recognition particle (SRP) protein-targeting pathway
+TTGACAAGATAAAAACTTGACAGTGTCAT
+> BSU_15990|rpsP|ribosomal protein S16 (BS17)
+TTTACAAACACTTTTATCATTGTTAATAT
+> BSU_16090|sucC|succinyl-CoA synthetase (beta subunit)
+TAGACAATTCTTCCAGTATTATTATAGA
+> BSU_16490|rpsB|ribosomal protein S2
+TTGTCGGATAAAGCTGTGTTATATTAT
+> BSU_16500|tsf|elongation factor Ts
+TTTTCAAGAAAAATGTGTAATATACATA
+> BSU_16680|rpsO|ribosomal protein S15 (BS18)
+TTGCAACGCACGCAAATTTTATTCTAAAAT
+> BSU_16940|recA|multifunctional SOS repair factor
+TTGGCAAATCCCTTCAAACAGGGTATAGT
+> BSU_16960|rny|endoribonuclease Y
+TTGACAAGTATTTCCGACACATTTACAAT
+> BSU_21480|sunA|sublancin 168 lantibiotic antimicrobial precursor peptide; SPBeta prophage
+TTGAATTTAGATTTATCTTCCTTTATATT
+> BSU_21490|sunI|protein of immunity to sublancin
+CTTAAAAAACATGGTAAAATTATATAAA
+> BSU_21540|yolA|conserved exported protein of unknown function; SPbeta phage
+TTGACAATATGAAAAGAACTTGCTTAAT
+> BSU_22790|hbs|non-specific DNA-binding protein HBsu
+TTGACGAGCAAGGGATTGACGCTTTAAAAT
+> BSU_22880|rpfA|RNA degradation presenting factor (ribosomal protein S1 homolog)
+TTGAATTTTTCAACGAAGATAGAATGTTAT
+> BSU_23860|gndA|NADP+-dependent 6-P-gluconate dehydrogenase
+TTGAAAAAAAGGGTGAATGTATGGTAAT
+> BSU_25020|sodA|superoxide dismutase (Mn[2+]-dependent)
+TTGATTACAAAGCATTCTTTTGTTACATT
+> BSU_25050|yqgA|cell wall protein
+TTGACAGGATTTCTTCGACTAAACATT
+> BSU_25410|rpsU|ribosomal protein S21
+TTGACCTGACTGATGGCTTATATTATAAT
+> BSU_28230|tig|prolyl isomerase (trigger factor)
+TTGAAAGCGCTATGTGTTATGTTATAAT
+> BSU_29130|icd|isocitrate dehydrogenase
+TTGAATGTTAGGAAAAATCATTTTATTTT
+> BSU_29140|citZ|citrate synthase II
+TTAACAAATGTCTGATTATTGTTTATAAT
+> BSU_31910|yukE|small WGX100 secreted protein (ESX-dependent secretion)
+TTGACTATGCCGAAAAACTGTTTTTATAAT
+> BSU_34800|cwlO|secreted cell wall DL-endopeptidase
+TTGACATCTGTTTGAAACATAAATGTAAT
+> BSU_35310|hpf|ribosome-associated sigma 54 modulation protein; ribosome dimerisation factor
+TTCACTGAATTTTCACAAAAGATTTATGTT
+> BSU_35360|hag|flagellin protein
+TTAACAAAATCAGAGACAATCCGATATTAA
+> BSU_35430|flgM|anti-sigma factor repressor of sigma(D)-dependent transcription
+TGAAAACGCAGTCGATAAAAGGGTTAAGAT
+> BSU_36850|atpF|ATP synthase (subunit b, component F0)
+CTTATATGAACTAAAAATGGCGAAGATCAT
+> BSU_37070|rpmEA|ribosomal protein L31
+TTGCAAAAGAAGTAAATCACTGATATAAT
+> BSU_37110|tal|transaldolase
+TTGACAGGCGGTTTTCCGTCTATCTTTAGA
+> BSU_37120|fbaA|fructose-1,6-bisphosphate aldolase
+TTTACATATGACAGCAATATATGGGTCAT
+> BSU_37460|rapF|response regulator aspartate phosphatase anti-activator of ComA
+TTCTCACAAGAATGTTGATGATAAAAT
+> BSU_38170|qoxA|cytochrome aa3-600 quinol oxidase (subunit II)
+TTTAAGCGAAAATGGGATGAAGTTTATAAA
+> BSU_38850|yxkC|conserved protein of unknown function
+TTGACTAAGAGAAATAATATAGGCATTAT
+> BSU_40090|ahpC|alkyl hydroperoxide reductase (small subunit)
+TTGAAAGCGATTATGCTTTCTAATACATT
+> BSU_40580|yybN|conserved protein of unknown function
+TTTACAGGTTATTACAGTTAAGATATAAT
+> BSU_40910|rpsF|ribosomal protein S6 (BS9)
+TTGTAAAGGGACAAGAGCTTTGGTATAAT
+> BSU_41060|rpmH|ribosomal protein L34
+TTGACAATGAATAGGTAACGCAAATATAAT
+> BSU_misc_RNA_20|mswC|S-adenosylmethionine riboswitch
+TTGACAACTAACTAAATTACCTGTTACCAT
+> BSU_misc_RNA_29|mswE|S-adenosylmethionine riboswitch
+TTGACTTATGTTAGAATTGTGCTAAAAT
+> BSU_misc_RNA_45|tboILV|T-box controlling synthesis of branched chain amino acids
+TTGACACTGCGTCCAAAGCGGCGTAATAT
+> BSU_misc_RNA_47||mRNA L20_leader attenuator sequence
+CTTGCGCTCATAGAAAACCCATGTTACAAT
+> BSU_misc_RNA_55|ssrA|transfer-messenger RNA (tmRNA, 10Sa RNA)
+TTGAAAAGAGCCGTGATCATGTTATAAT
