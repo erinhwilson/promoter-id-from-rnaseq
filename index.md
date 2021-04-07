@@ -43,10 +43,16 @@ Choose an image in the gallery to explore explore data interactively.
             </td>
         </tr>
         <tr>
+             <td>
+                <a href="viz/mbur_operon_dist.html" title="Go to interactive visualization" display='inline'>
+                    <img src="img/mbur_operon_dist.png" alt="Intra-operon upstream distances" width="300"/>
+                    <p style="text-align: center">Intra-operon upstream distances</p>
+                </a>
+            </td>
             <td>
                 <a href="viz/figureS4C.html" title="Go to interactive visualization" display='inline'>
                     <img src="img/figureS4C.png" alt="Promoter Enrichment vs IC" width="300"/>
-                    <p style="text-align: center">Promoter Enrichment vs IC</p>
+                    <p style="text-align: center">Promoter Enrichment vs Information Content</p>
                 </a>
             </td>
         </tr>
