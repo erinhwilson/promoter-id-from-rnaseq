@@ -8,7 +8,9 @@ Jupyter notebook tutorials are provided in `/tutorials` to help users better und
 1. [Exploration of TPM data across conditions](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/tpm-data-exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tpm-data-exploration.ipynb)
 1. [Inspection of BioProspector output files](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/inspect_BioProspector_results.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/inspect_BioProspector_results.ipynb)
 1. [Consensus motif analysis](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/analyze_consensus_motif.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/analyze_consensus_motif.ipynb)
+1. [Compare consensus predictions across organisms](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/compare_consensus_predictions.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/compare_consensus_predictions.ipynb)
 1. [Operon upstream distance exploration](https://erinhwilson.github.io/promoter-id-from-rnaseq/tutorials/operon_distance_exploration.html) [`ipynb`](https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/master/tutorials/operon_distance_exploration.ipynb)
+ 
 
 ## Overview
 This computational framework contains 3 main steps:
@@ -84,7 +86,9 @@ Inputs:
 1. (Optional) min upstream distance (default: 20bp)
     * sometimes genes are too close (or even overlapping). By default this program will truncate upstream sequences to avoid including coding sequence DNA of other features, but if this parameters sets the minimum sequence that must be extracted, even if there is some overlap
 1. (Optional) no truncation mode
-    * by default, this program will truncate upstream regions to avoid coding sequences of nearby features. However this mode can be turned off with `--no_trunc` and exactly `window size` bases will be extracted from every locus with no attempt to truncate
+    * by default, this program will truncate the upstream side of promoter regions to avoid coding sequences of nearby features. However this mode can be turned off with `--no_trunc` and exactly `window size` bases will be extracted from every locus with no attempt to truncate the window. This may result in coding sequences of nearby features being included in the extracted promoter region.
+1. (Optional) RBS avoidance flag (default=False; when True, default=15bp)
+    *  When this flag is turned on, it will truncate the final N bases of the extracted promoter (the N bases immediately preceding the gene start coordinate). This area often contains a strong RBS signal which may be desirable to cut out so the motif finder tool ignores this signal. Using `-r` will by default truncate 15bp, but `-r N` can be used to set any distance. *Note: This truncation will not make a sequence any shorter than `min_dist` set above*. 
     
 #### Example run command
 `python extract_upstream_regions.py out_dir/loci_in_top_3perc.txt data/5GB1c_sequence.gb out_dir`
