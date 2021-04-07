@@ -1,0 +1,6 @@
+Promoter	xyle_rep1	xyle_rep2	xyle_rep3	anderson
+Mbur Predicted Consensus	852	949	1797.4	FALSE
+J23117	-38.2	-80.6	-128.8	TRUE
+J23112	-75	-114.8	-9.8	TRUE
+J23101	24	92.2	115	TRUE
+J23119	1829.8	1594.8	1556.8	TRUE
