@@ -1,7 +1,7 @@
 # promoter-id-from-rnaseq
 This repository contains a framework, data, and analysis associated with the paper "A computational framework to identify promoter sequences from RNA-seq datasets." There is also a [**project page**](https://erinhwilson.github.io/promoter-id-from-rnaseq/) with data analysis tutorials and an interactive visualization gallery. 
 
-_This publication is currently under review. A link to the paper will be provided upon publication._ 
+_This work was published in ACS Synthetic Biology in May 2021. Article located [here](https://doi.org/10.1021/acssynbio.1c00017)._ 
 
 ## Tutorial Notebooks
 Jupyter notebook tutorials are provided in `/tutorials` to help users better understand various stages of the workflow and explore relevant outputs.
