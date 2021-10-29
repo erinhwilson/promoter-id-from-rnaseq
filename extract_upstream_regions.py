@@ -35,7 +35,8 @@ def get_all_upstream_regions(gb_file,
                              min_dist,# default=20 in argparse
                              no_truncate,# default=False in argparse
                              avoid_rbs,# default=None in argpase
-                             verbose=False
+                             pre_window_extension,#default=0 in argparse
+                             verbose=False,
                              ):
     '''
     Given a genbank file, parse out all its features into 6-tuples
@@ -70,6 +71,10 @@ def get_all_upstream_regions(gb_file,
             # get the range of the promoter region
             p_left = cur_feat[RIGHT_IDX] + 1
             p_right = p_left + window_size
+
+            # if there's a request to extend into the start of the gene, add it here
+            if pre_window_extension:
+                p_left -= pre_window_extension
 
             # extract a slice from the genome at the proper coordinates
             # revcomp because on reverse
@@ -116,6 +121,10 @@ def get_all_upstream_regions(gb_file,
         elif cur_feat[STRAND_IDX] == 1:
             p_right = cur_feat[LEFT_IDX] - 1 
             p_left = p_right - window_size
+
+            # if there's a request to extend into the start of the gene, add it here
+            if pre_window_extension:
+                p_right += pre_window_extension
             
             # extract a slice from the genome at the proper coordinates
             seq = genome[p_left:p_right]
@@ -183,8 +192,10 @@ def write_fasta_file(args, loci, upstream_regions):
     trunc_string = "" if args.no_trunc else "_trunc"
     # append rbs string if in rbs_avoidance mode
     rbs_flag = "" if not args.avoid_rbs else f"_RBSminus{args.avoid_rbs}"
+    # append pre-ext string if in an extension was added
+    pre_ext_flag = "" if not args.pre_window_ext else f"_preext{args.pre_window_ext}"
     # concat some relevant args
-    filename = f"{base}_upstream_regions_w{args.window_size}{rbs_flag}_min{args.min_dist}{trunc_string}.fa"
+    filename = f"{base}_upstream_regions_w{args.window_size}{pre_ext_flag}{rbs_flag}_min{args.min_dist}{trunc_string}.fa"
     # path to outdir
     out_path = os.path.join(args.outdir,filename)
 
@@ -218,6 +229,7 @@ def main():
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
     parser.add_argument('-w', '--window_size',default=300, type=int, help='bp length of upstream region to extract')
+    parser.add_argument('-p', '--pre_window_ext',default=0, type=int, help='bp length of upstream region to extract')
     parser.add_argument('-m', '--min_dist',   default=20,type=int,help='Minimum upstream distance to extract, even if features are too close.')
     parser.add_argument('-t', '--no_trunc', action='store_true',help='Turn OFF truncation mode - so always extract window_size bp, even if it overlaps with other features')
     parser.add_argument('-r', '--avoid_rbs',nargs='?',type=int,const=15, default=None,help='Turn ON RBS avoidance to truncate the end of the extracted sequence by n bases (default n=15). It will not reduce a sequence to be shorter than min_dist')
@@ -236,7 +248,8 @@ def main():
         args.window_size, 
         args.min_dist,
         args.no_trunc,
-        args.avoid_rbs)
+        args.avoid_rbs,
+        args.pre_window_ext)
 
     
     # +------+
