@@ -22,11 +22,16 @@ LOCUS_IDX = 3
 GENE_IDX = 4
 TYPE_IDX = 5
 
-def load_loci(filename):
+def load_loci(filename,get_all_loci):
     df = pd.read_csv(filename,sep='\t')
 
-    # return list of loci not flagged as potentially in an operon
-    loci = list(df[df['op?']==False]['locus_tag'].values)
+    if not get_all_loci:
+        # return list of loci not flagged as potentially in an operon
+        loci = list(df[df['op?']==False]['locus_tag'].values)
+    # if you want all loci anyways
+    else:
+        loci = list(df['locus_tag'].values)
+
     return loci 
 
 
@@ -63,6 +68,7 @@ def get_all_upstream_regions(gb_file,
 
     # loop through features and get upstream for all
     for i,cur_feat in enumerate(feats):
+
         # +-----------------+
         # | NEGATIVE STRAND |
         # +-----------------+
@@ -121,6 +127,9 @@ def get_all_upstream_regions(gb_file,
         elif cur_feat[STRAND_IDX] == 1:
             p_right = cur_feat[LEFT_IDX] - 1 
             p_left = p_right - window_size
+            # if the window goes beyond the start of the genome
+            if p_left < 0:
+                p_left = 0
 
             # if there's a request to extend into the start of the gene, add it here
             if pre_window_extension:
@@ -229,16 +238,17 @@ def main():
     parser.add_argument('outdir', help='Output directory where results are written')
     # Optional args
     parser.add_argument('-w', '--window_size',default=300, type=int, help='bp length of upstream region to extract')
-    parser.add_argument('-p', '--pre_window_ext',default=0, type=int, help='bp length of upstream region to extract')
+    parser.add_argument('-p', '--pre_window_ext',default=0, type=int, help='optional bp length of window extension into gene sequence')
     parser.add_argument('-m', '--min_dist',   default=20,type=int,help='Minimum upstream distance to extract, even if features are too close.')
     parser.add_argument('-t', '--no_trunc', action='store_true',help='Turn OFF truncation mode - so always extract window_size bp, even if it overlaps with other features')
     parser.add_argument('-r', '--avoid_rbs',nargs='?',type=int,const=15, default=None,help='Turn ON RBS avoidance to truncate the end of the extracted sequence by n bases (default n=15). It will not reduce a sequence to be shorter than min_dist')
+    parser.add_argument('-a', '--all_loci',action='store_true',help='Turn OFF operon skipping and just get all loci')
     
     args = parser.parse_args()
 
     # get loci
     print("Loading loci of interest...")
-    loci = load_loci(args.loci_file)
+    loci = load_loci(args.loci_file,args.all_loci)
     print(loci)
 
     # get upstream regions
