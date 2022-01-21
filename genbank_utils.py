@@ -60,6 +60,21 @@ def get_feature_tuples_from_genbank(gb_file):
             
     return feat_list
 
+def get_gbfeats2exclude():
+    '''
+    Open the config file specifying which kinds of genbank features
+    to exclude when extracting pos and neg feats (these are typically
+    features that a user may find are just redundant entries. For example,
+    in the M. buryatense genbank file, there are duplicate entries labeled
+    as "CDS" and "gene" that have the same coordinate/locus tag. I decided
+    to go with "CDS" and exclude the "gene" version of each feature. 
+    
+    A user can amend this configuration in config/gbfeats2exclude.txt"
+    '''
+    with open('config/gbfeats2exclude.txt','r') as f:
+        lines = [x.strip() for x in f.readlines()]
+    return lines
+
 
 def get_pos_neg_features(gb_file):
     '''
@@ -67,8 +82,9 @@ def get_pos_neg_features(gb_file):
     lists of positive strand feats and negative strand feats
     '''
     feats = get_feature_tuples_from_genbank(gb_file)
+    gbfeats2exclude = get_gbfeats2exclude()
 
-    feats_filt = [x for x in feats if (x[TYPE_IDX] != 'gene') and (x[TYPE_IDX] != 'source')]
+    feats_filt = [x for x in feats if (x[TYPE_IDX] not in gbfeats2exclude)]
         
     # separate pos and neg lists and sort by gene start coordinate
     pos_feats = [x for x in feats_filt if x[STRAND_IDX]== 1]
