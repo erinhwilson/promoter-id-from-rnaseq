@@ -1,0 +1,10 @@
+wt_glc
+wt_dpd
+wt_fe
+wt_glu
+wt_gly
+wt_thr
+wt_ac
+wt_fru
+wt_ph5
+wt_nacl
