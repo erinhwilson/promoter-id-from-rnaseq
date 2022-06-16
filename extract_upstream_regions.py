@@ -211,12 +211,17 @@ def write_fasta_file(args, loci, upstream_regions):
     # write fasta file
     with open(out_path,'w') as f:
         for loc in loci:
-            # some extra metadata for output readability
-            gene_symbol = feat2meta[loc]['gene_symbol']
-            product = feat2meta[loc]['product']
-            header = f">{loc}|{gene_symbol}|{product}"
+            # gene id is not in the genbank file
+            if loc not in feat2meta:
+                print(f"GenBank file is missing locus: {loc}")
+                # skip
+            else:
+                # some extra metadata for output readability
+                gene_symbol = feat2meta[loc]['gene_symbol']
+                product = feat2meta[loc]['product']
+                header = f">{loc}|{gene_symbol}|{product}"
 
-            f.write(f"{header}\n{upstream_regions[loc]}\n")
+                f.write(f"{header}\n{upstream_regions[loc]}\n")
 
 
     return out_path
